@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="144dp"
+        android:layout_height="match_parent"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:layout_gravity="center|top"
+        android:text="Sentence builder app"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button_id"
+        android:layout_width="124dp"
+        android:layout_height="59dp"
+        android:layout_gravity="end"
+        android:text="@string/read_out_sentence" />
+    <TextView
+        android:id="@+id/build2"
+        android:layout_width="124dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:layout_margin="16dp"
+        android:text="@string/add_an_image" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/submit"
+        android:src="@drawable/ic_my_icon" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/build_a_sentence"/>
+
+    <TextView
+        android:id="@+id/text_view2"
+        android:layout_width="124dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:text="@string/word_inventory" />
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/grid_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/beach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/beach" />
+
+            <ImageButton
+                android:id="@+id/man"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/man" />
+
+            <ImageButton
+                android:id="@+id/woman"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/woman" />
+
+            <ImageButton
+                android:id="@+id/child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/child" />
+
+            <ImageButton
+                android:id="@+id/dog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dog" />
+
+            <ImageButton
+                android:id="@+id/cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cat" />
+
+            <ImageButton
+                android:id="@+id/horse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/horse" />
+
+            <ImageButton
+                android:id="@+id/island"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/island" />
+
+            <ImageButton
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/city" />
+
+
+        </GridLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

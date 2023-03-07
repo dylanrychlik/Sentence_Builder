@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Sentence Builder</string>
+    <string name="read_out_sentence">Read out sentence</string>
+    <string name="add_an_image">Add an image</string>
+    <string name="submit">Submit</string>
+    <string name="build_a_sentence">Build a sentence</string>
+    <string name="word_inventory">Word Inventory</string>
+</resources>
