@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/name"
@@ -28,6 +34,7 @@
         android:layout_height="59dp"
         android:layout_gravity="end"
         android:text="@string/read_out_sentence" />
+
     <TextView
         android:id="@+id/build2"
         android:layout_width="124dp"
@@ -60,78 +67,12 @@
         android:textStyle="bold"
         android:text="@string/word_inventory" />
 
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/scrollView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewnouns"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/grid_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/beach"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/beach" />
-
-            <ImageButton
-                android:id="@+id/man"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/man" />
-
-            <ImageButton
-                android:id="@+id/woman"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/woman" />
-
-            <ImageButton
-                android:id="@+id/child"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/child" />
-
-            <ImageButton
-                android:id="@+id/dog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/dog" />
-
-            <ImageButton
-                android:id="@+id/cat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/cat" />
-
-            <ImageButton
-                android:id="@+id/horse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/horse" />
-
-            <ImageButton
-                android:id="@+id/island"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/island" />
-
-            <ImageButton
-                android:id="@+id/city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/city" />
-
-
-        </GridLayout>
-
-    </ScrollView>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/card_view_nouns" />
 
 
 </LinearLayout>
+</ScrollView >
