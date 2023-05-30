@@ -1,5 +1,6 @@
 package com.example.sentencebuilder
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +15,7 @@ class WordViewModel: ViewModel() {
     init {
         _wordList.update {
             listOf(
+                //WordUri("fish",0,Uri.parse("file:///sdcard/Download/image.jpg")),
                 WordUri("Beach", R.drawable.beach),
                 WordUri("Beach", R.drawable.child),
                 WordUri("Beach", R.drawable.city),
@@ -42,13 +44,19 @@ class WordViewModel: ViewModel() {
                 WordUri("Beach", R.drawable.them),
                 WordUri("Beach", R.drawable.as_the_word),
                 WordUri("Beach", R.drawable.have),
-            )
+
+                )
         }
     }
 
-    fun addWord(name: String, resId: Int) {
+    fun addWord(name: String, Uri: Uri) {
         _wordList.update {
-            it.plus(WordUri(name, resId))
-        }
+            it.plus(WordUri(name, 0,Uri))        }
     }
-}
+    fun addWord(name: String, imageResId: Int) {
+        _wordList.update {
+            it.plus(WordUri(name, imageResId,null))        }
+    }
+
+    }
+

@@ -1,27 +1,40 @@
 package com.example.sentencebuilder
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.app.Activity
+import android.app.appsearch.SetSchemaRequest.READ_EXTERNAL_STORAGE
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.fragment.app.FragmentManager
 import android.os.Bundle
+import android.os.Environment
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.util.Base64
 import android.widget.ImageButton
 
 import android.widget.ListAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.File
 
 
 class MainActivity : FragmentActivity() {
     private val fragment = WordFragment()
 
     private val wordViewModel: WordViewModel by viewModels()
-
+    private val PICK_IMAGE_REQUEST = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,7 +44,7 @@ class MainActivity : FragmentActivity() {
 
         // adapter = lnoun
         fab.setOnClickListener {
-            this.initializeAddButton()
+           initializeAddButton()
         }
 
         displayWordFragment()
@@ -43,33 +56,50 @@ class MainActivity : FragmentActivity() {
     }
 
 
-    fun initializeAddButton() {
-//        val img = ImageButton(context)
-//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-//
-//        intent.setDataAndType(Uri.parse("content://" + "/sdcard/Download/image.jpg"), "*/*");
-      //  val result = 1
-        // startActivityForResult(intent, result)
-//        val photoPath = intent.data?.path
-//
-//        val bitmap1 = BitmapFactory.decodeFile(photoPath)
+    private fun initializeAddButton() {
+        //WordUri("fish",0,Uri.parse("file:///sdcard/Download/image.jpg"))
+       // wordViewModel.addWord("fish",Uri.parse("file:///sdcard/Download/image.jpg"))
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        // Uri photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", createImageFile());
-
-        // val gd = GradientDrawable()
-        //img = ImageButton(applicationContext)
-        //imageView.setImageDrawable(gd)
-//        img.setImageBitmap(bitmap1)
-//        recyclerView.adapter = adapter
-        wordViewModel.addWord("fish", R.drawable.cat)
-
-//        startActivity(intent)
-
-//        adapter.submitList(words)
-//
-//        System.out.println("Turtle tester who is getting fired Friday " + words.size)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { imageUri ->
+                wordViewModel.addWord("fish", imageUri)
+            }
+        }
     }
 
-}
+  /*  private fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { imageUri ->
+                // Use the imageUri as desired
+                // For example, you can display it in an ImageView or perform further operations
+
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { imageUri ->
+                // Use the imageUri as desired
+                // For example, you can display it in an ImageView or perform further operations
+                handleActivityResult(requestCode, resultCode, data)
+            }
+        }
+        }
+    }*/
+
+
+
+
+
+    }
+
+

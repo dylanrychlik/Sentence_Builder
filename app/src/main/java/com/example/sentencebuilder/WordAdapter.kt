@@ -3,6 +3,12 @@ package com.example.sentencebuilder
 
 //import android.support.v7.recyclerview.extensions.ListAdapter
 
+//import android.support.v7.recyclerview.extensions.ListAdapter
+import android.content.Context
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
@@ -23,7 +29,6 @@ class WordUriListAdapter : ListAdapter<WordUri, WordUriViewHolder>(WordUriViewHo
     override fun onBindViewHolder(holder: WordUriViewHolder, position: Int) {
         holder.bindView(currentList[position])
     }
-
 
 
 
