@@ -49,13 +49,13 @@ class WordViewModel: ViewModel() {
         }
     }
 
-    fun addWord(name: String, Uri: Uri) {
+    fun addWord(name: String, Uri: Uri,soundUri: Uri?) {
         _wordList.update {
-            it.plus(WordUri(name, 0,Uri))        }
+            it.plus(WordUri(name, 0,Uri,soundUri))        }
     }
-    fun addWord(name: String, imageResId: Int) {
+    fun addWord(name: String, imageResId: Int,soundUri: Uri?) {
         _wordList.update {
-            it.plus(WordUri(name, imageResId,null))        }
+            it.plus(WordUri(name, imageResId,null,soundUri))        }
     }
 
     }

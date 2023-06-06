@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.MediaPlayer
+import android.net.Uri
 import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
@@ -13,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 //makes a standard view holder class to hold the reclycler views
 data //	ViewHolder, the View rendered in the RecyclerView
-class WordUriViewHolder(
-    private val view: View
-) : RecyclerView.ViewHolder(view) {
+class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+
+    private var mediaPlayer: MediaPlayer? = null
 
     fun bindView(wordUri: WordUri) {
         with(view.findViewById<CardView>(R.id.card_view_noun)) {
@@ -46,10 +48,30 @@ class WordUriViewHolder(
             } else {
 
             }
+            imageButton.setOnClickListener {
+                wordUri.soundUri?.let { soundUri ->
+                    playSound(soundUri)
+                    mediaPlayer = MediaPlayer.create(view.context, R.raw.beach)
+                }
+            }
         }
     }
 
 
+    private fun playSound(soundUri: Uri) {
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(view.context, soundUri)
+            setOnPreparedListener {
+                it.start()
+            }
+            prepareAsync()
+        }
+    }
+    private fun onViewDetachedFromWindow() {
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
 
 
     object WordUriDiffUtil : DiffUtil.ItemCallback<WordUri>() {

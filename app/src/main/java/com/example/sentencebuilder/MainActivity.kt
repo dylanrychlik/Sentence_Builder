@@ -68,7 +68,7 @@ class MainActivity : FragmentActivity() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             data?.data?.let { imageUri ->
-                wordViewModel.addWord("fish", imageUri)
+                wordViewModel.addWord("fish", imageUri,null)
             }
         }
     }
