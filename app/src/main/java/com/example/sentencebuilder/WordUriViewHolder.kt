@@ -51,7 +51,9 @@ class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
 
             }
             imageButton.setOnClickListener {
-                System.out.println("Turtle tester who is getting fired friday: ")
+
+
+
                 /* wordUri.soundUri?.let { soundUri ->
                     playSound(soundUri)
                     mediaPlayer = MediaPlayer.create(view.context, R.raw.beach)

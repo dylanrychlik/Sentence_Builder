@@ -12,38 +12,39 @@ class WordViewModel: ViewModel() {
     private val _wordList = MutableStateFlow(listOf<WordUri>())
     val wordList: StateFlow<List<WordUri>> = _wordList.asStateFlow()
 
+
     init {
         _wordList.update {
             listOf(
                 //WordUri("fish",0,Uri.parse("file:///sdcard/Download/image.jpg")),
                 WordUri("Beach", R.drawable.beach),
-                WordUri("Beach", R.drawable.child),
-                WordUri("Beach", R.drawable.city),
-                WordUri("Beach", R.drawable.dog),
-                WordUri("Beach", R.drawable.man),
-                WordUri("Beach", R.drawable.woman),
-                WordUri("Beach", R.drawable.cat),
-                WordUri("Beach", R.drawable.eat),
-                WordUri("Beach", R.drawable.make),
-                WordUri("Beach", R.drawable.guess),
-                WordUri("Beach", R.drawable.find),
-                WordUri("Beach", R.drawable.call),
-                WordUri("Beach", R.drawable.buy),
-                WordUri("Beach", R.drawable.thewordbreak),
-                WordUri("Beach", R.drawable.think),
-                WordUri("Beach", R.drawable.listen),
-                WordUri("Beach", R.drawable.thewordlong),
-                WordUri("Beach", R.drawable.light),
-                WordUri("Beach", R.drawable.funny),
-                WordUri("Beach", R.drawable.thewordi),
-                WordUri("Beach", R.drawable.it),
-                WordUri("Beach", R.drawable.different),
-                WordUri("Beach", R.drawable.him),
-                WordUri("Beach", R.drawable.her),
-                WordUri("Beach", R.drawable.they),
-                WordUri("Beach", R.drawable.them),
-                WordUri("Beach", R.drawable.as_the_word),
-                WordUri("Beach", R.drawable.have),
+                WordUri("Child", R.drawable.child),
+                WordUri("City", R.drawable.city),
+                WordUri("Dog", R.drawable.dog),
+                WordUri("Man", R.drawable.man),
+                WordUri("Woman", R.drawable.woman),
+                WordUri("Cat", R.drawable.cat),
+                WordUri("Eat", R.drawable.eat),
+                WordUri("Make", R.drawable.make),
+                WordUri("Guess", R.drawable.guess),
+                WordUri("Find", R.drawable.find),
+                WordUri("Call", R.drawable.call),
+                WordUri("Buy", R.drawable.buy),
+                WordUri("Break", R.drawable.thewordbreak),
+                WordUri("Think", R.drawable.think),
+                WordUri("Listen", R.drawable.listen),
+                WordUri("Long", R.drawable.thewordlong),
+                WordUri("Light", R.drawable.light),
+                WordUri("Funny", R.drawable.funny),
+                WordUri("I", R.drawable.thewordi),
+                WordUri("it", R.drawable.it),
+                WordUri("different", R.drawable.different),
+                WordUri("him", R.drawable.him),
+                WordUri("Her", R.drawable.her),
+                WordUri("They", R.drawable.they),
+                WordUri("Them", R.drawable.them),
+                WordUri("As", R.drawable.as_the_word),
+                WordUri("Have", R.drawable.have),
 
                 )
         }
@@ -53,10 +54,6 @@ class WordViewModel: ViewModel() {
         _wordList.update {
             it.plus(WordUri(name, 0,Uri,soundUri))        }
     }
-    fun addWord(name: String, imageResId: Int,soundUri: Uri?) {
-        _wordList.update {
-            it.plus(WordUri(name, imageResId,null,soundUri))        }
-    }
 
-    }
+}
 

@@ -14,6 +14,7 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
+
     <TextView
         android:id="@+id/name"
         android:layout_width="144dp"
@@ -29,8 +30,9 @@
         app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <Button
-        android:id="@+id/button_id"
+        android:id="@+id/read_sentence"
         android:layout_width="124dp"
         android:layout_height="59dp"
         android:layout_gravity="end"
@@ -54,6 +56,7 @@
         android:src="@drawable/ic_my_icon" />
 
     <Button
+        android:id="@+id/build_sentence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

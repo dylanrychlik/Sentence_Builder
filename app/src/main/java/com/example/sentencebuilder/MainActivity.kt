@@ -16,6 +16,7 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Base64
+import android.widget.Button
 import android.widget.ImageButton
 
 import android.widget.ListAdapter
@@ -32,8 +33,10 @@ import java.io.File
 
 class MainActivity : FragmentActivity() {
     private val fragment = WordFragment()
+    private var currentStep = 1
 
     private val wordViewModel: WordViewModel by viewModels()
+    private val WordViewModelSelectedImage: WordViewModel by viewModels()
     private val PICK_IMAGE_REQUEST = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +49,24 @@ class MainActivity : FragmentActivity() {
         fab.setOnClickListener {
            initializeAddButton()
         }
+        val build_sentence = findViewById<Button>(R.id.build_sentence)
+        build_sentence.setOnClickListener {
+            showNextStep()
+           println("Drych the legend " + listOf(WordViewModelSelectedImage.wordList).size)
+
+        }
 
         displayWordFragment()
+    }
+
+    private fun showNextStep() {
+
+                val dialog = WizardDialogFragment()
+               dialog.show(supportFragmentManager, "WizardDialogFragment")
+
+       // supportFragmentManager.beginTransaction()
+         //   .add(R.id.selected_word_fragment, fragment, "WizardDialogFragment")
+
     }
     private fun displayWordFragment() {
         supportFragmentManager.beginTransaction()
