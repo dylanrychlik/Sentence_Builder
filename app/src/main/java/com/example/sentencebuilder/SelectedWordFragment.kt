@@ -27,7 +27,7 @@ class SelectedWordFragment : DialogFragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 WordViewModelSelectedImage.wordList.collect {
-                    println("Turtle tester who is getting fired Monday " + it.size)
+                    println("Turtle tester who is getting fired Sunday by Kurt " + it.size)
                   //  adapter.submitList(it)
                 }
             }
@@ -39,12 +39,12 @@ class SelectedWordFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_wizard, container, false)
+        return inflater.inflate(R.layout.selected_word_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recyclerViewnouns)
+        recyclerView = view.findViewById(R.id.recylerViewselectedImages)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
 
         adapter = SelectableImageAdapter()

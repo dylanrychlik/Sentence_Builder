@@ -6,14 +6,18 @@
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/drawable/dialog_wizard.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/drawable/fragment_image_selection_wizard_popup.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/card_view_adjectives.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/card_view_nouns.xml" value="0.103125" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/card_view_other.xml" value="0.12760416666666666" />
+        <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/card_view_selected_image.xml" value="0.1" />
+        <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/card_view_verbs.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/dialog_wizard.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/dialog_wizard_word1.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/dialog_wizard_word2.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/dialog_wizard_word3.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/fragment_dialog.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/recyclerviewdselectedimages.xml" value="0.103125" />
+        <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/selected_word_fragment.xml" value="0.1" />
         <entry key="..\:/Users/dylan/AndroidStudioProjects/Sentence_Builder-Debug/app/src/main/res/layout/word_fragment.xml" value="0.103125" />
       </map>
     </option>
