@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.MediaPlayer
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView

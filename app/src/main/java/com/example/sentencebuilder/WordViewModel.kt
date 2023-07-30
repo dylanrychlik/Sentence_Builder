@@ -54,6 +54,11 @@ class WordViewModel: ViewModel() {
         _wordList.update {
             it.plus(WordUri(name, 0,Uri,soundUri))        }
     }
+    fun addWord(name: String, resId: Int) {
+        _wordList.update {
+            it.plus(WordUri(name, resId))
+        }
+    }
 
 }
 

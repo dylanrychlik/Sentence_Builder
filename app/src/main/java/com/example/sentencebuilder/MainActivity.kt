@@ -64,10 +64,10 @@ class MainActivity : FragmentActivity() {
 
     private fun initializeAddButton() {
         //WordUri("fish",0,Uri.parse("file:///sdcard/Download/image.jpg"))
-       // wordViewModel.addWord("fish",Uri.parse("file:///sdcard/Download/image.jpg"))
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        wordViewModel.addWord("fish",R.drawable.image)
+//        val intent = Intent(Intent.ACTION_GET_CONTENT)
+//        intent.type = "image/*"
+//        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

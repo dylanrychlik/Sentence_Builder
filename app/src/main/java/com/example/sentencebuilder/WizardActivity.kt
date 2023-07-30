@@ -1,11 +1,8 @@
 package com.example.sentencebuilder
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -26,21 +23,18 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 
 class WizardActivity : FragmentActivity() {
-    private lateinit var recyclerView: RecyclerView
     private  val fragment2 = SelectedWordFragment()
     private val PICK_IMAGE_REQUEST = 1
 
     private lateinit var targetAdapter: SelectableImageAdapter
 
-    private lateinit var wordAdapter: WordUriListAdapter
-
-    private val selectedImagesList = mutableListOf<WordUriSelectedImage>()
+    private val selectedImagesList = mutableListOf<WordUri>()
     private val WordViewModel:  WordViewModel by viewModels()
     private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
+    private lateinit var selectedWordUri: WordUri
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
 
         super.onCreate(savedInstanceState)
@@ -86,46 +80,24 @@ class WizardActivity : FragmentActivity() {
             println("Dylan Rychlik the autistic legend $selectedWord")
 
             // Find the corresponding WordUri object from wordViewModel.wordList
-            val selectedWordUri = WordViewModel.wordList.value.find { it.word == selectedWord }
+             selectedWordUri = WordViewModel.wordList.value.find { it.word == selectedWord }!!
 
-            println("Selected wordUri: $selectedWordUri")
-
-            if (selectedWordUri != null) {
-                // Add the selected WordUri object to the WordViewModelSelectedImage's wordList
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.type = "image/*"
-                startActivityForResult(intent, PICK_IMAGE_REQUEST)
-
-                    WordViewModelSelectedImage.addWord(selectedWordUri)
-
-
-                // Print the size of the wordList immediately after adding the word
-                println("Size of wordList: " + WordViewModelSelectedImage.wordList.value.size)
-                lifecycleScope.launch {
-                    // Make sure the coroutine is active while the Lifecycle is at least in STARTED state
-                    repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        // Collect latest wordList
-                        WordViewModelSelectedImage.wordList.collect {
-                            // Print the size of the wordList
-
-                            targetAdapter = SelectableImageAdapter()
-                            targetAdapter.submitList(it)
-                            println("Turtle tester who is getting fired Monday in coroutine " + it.size)
-                        }
-                    }
-                }
-
-                // Set the result to pass back the selected word to MainActivity
-//          val resultIntent = Intent()
-//               resultIntent.putExtra("selectedWord", selectedWord)
-//              setResult(Activity.RESULT_OK, resultIntent)
-//            }
-
-
-                // Close the activity and return to MainActivity
-                //finish()
+            selectedWordUri.imageResId?.let { it1 ->
+                WordViewModelSelectedImage.addWord(selectedWordUri.word,
+                    selectedWordUri.imageResId!!
+                )
             }
-        }
+
+
+//                val intent = Intent(Intent.ACTION_GET_CONTENT)
+//              intent.type = "image/*"
+//                startActivityForResult(intent, PICK_IMAGE_REQUEST)
+                println("Word list size: ${WordViewModelSelectedImage.wordList.value.size}")
+            }
+
+
+
+
 
 
         val cancelButton = findViewById<Button>(R.id.cancelButton)
@@ -144,17 +116,22 @@ class WizardActivity : FragmentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == MainActivity.WIZARD_ACTIVITY_REQUEST_CODE) {
-            // Handle the result from WizardActivity here
-            if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            val imageUri = data?.data
 
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                // The user cancelled the WizardActivity or some error occurred
-                // You can handle this case as needed
+            if (imageUri != null) {
+                // Process the selected image URI here
+                // You can use the imageUri to update your WordViewModelSelectedImage
+                // using the addWord function
+                WordViewModelSelectedImage.addWord(selectedWordUri.word, imageUri, selectedWordUri.soundUri)
+            } else {
+                // Handle the case when the selected image URI is null
+                println("Error: Selected image URI is null.")
             }
         }
     }
-}
+    }
+
 
 
 

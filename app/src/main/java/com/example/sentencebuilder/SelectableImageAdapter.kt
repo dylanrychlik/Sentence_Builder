@@ -7,9 +7,8 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 
 
-class SelectableImageAdapter: ListAdapter<WordUriSelectedImage, WordUriViewHolderSelectedImage>(WordUriViewHolderSelectedImage.WordUriDiffUtil) {
-    private val selectedItems = mutableSetOf<WordUriSelectedImage>()
-    private var itemClickListener: AdapterView.OnItemClickListener? = null
+class SelectableImageAdapter: ListAdapter<WordUri, WordUriViewHolderSelectedImage>(WordUriViewHolderSelectedImage.WordUriDiffUtil) {
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordUriViewHolderSelectedImage {

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +19,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 
-class SelectedWordFragment : DialogFragment() {
+class SelectedWordFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: SelectableImageAdapter
+        private lateinit var adapter: SelectableImageAdapter
     private val WordViewModelSelectedImage by activityViewModels<WordViewModelSelectedImage>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,7 @@ class SelectedWordFragment : DialogFragment() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 WordViewModelSelectedImage.wordList.collect {
                     println("Turtle tester who is getting fired Sunday by Kurt " + it.size)
-                  //  adapter.submitList(it)
+                  adapter.submitList(it)
                 }
             }
         }
