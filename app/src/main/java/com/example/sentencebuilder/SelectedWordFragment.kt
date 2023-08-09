@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class SelectedWordFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-        private lateinit var adapter: SelectableImageAdapter
+    private lateinit var adapter: SelectableImageAdapter
     private val WordViewModelSelectedImage by activityViewModels<WordViewModelSelectedImage>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class SelectedWordFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 WordViewModelSelectedImage.wordList.collect {
                     println("Turtle tester who is getting fired Sunday by Kurt " + it.size)
-                  adapter.submitList(it)
+                    adapter.submitList(it)
                 }
             }
         }
@@ -55,5 +55,6 @@ class SelectedWordFragment : Fragment() {
     }
 
 }
+
 
 

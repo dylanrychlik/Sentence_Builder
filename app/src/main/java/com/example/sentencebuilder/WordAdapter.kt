@@ -15,9 +15,8 @@ import android.widget.AdapterView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 
-//List Adapter for displaying items in RecyclerView
-class WordUriListAdapter : ListAdapter<WordUri, WordUriViewHolder>(WordUriViewHolder.WordUriDiffUtil) {
-    //	Inflate views from XML layout
+class WordUriListAdapter(private val outputFilePath: String?) : ListAdapter<WordUri, WordUriViewHolder>(WordUriViewHolder.WordUriDiffUtil) {
+    // Inflate views from XML layout
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordUriViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_view_nouns, parent, false)
@@ -25,9 +24,9 @@ class WordUriListAdapter : ListAdapter<WordUri, WordUriViewHolder>(WordUriViewHo
         return WordUriViewHolder(view)
     }
 
-    //	Bind data to View
+    // Bind data to View
     override fun onBindViewHolder(holder: WordUriViewHolder, position: Int) {
-        holder.bindView(currentList[position])
+        holder.bindView(currentList[position],outputFilePath)
 
     }
 }

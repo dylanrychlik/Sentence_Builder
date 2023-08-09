@@ -1,37 +1,28 @@
 package com.example.sentencebuilder
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
+import androidx.core.view.get
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
-
-class WizardActivity : FragmentActivity() {
+class WizardActivity() : FragmentActivity() {
     private  val fragment2 = SelectedWordFragment()
     private val PICK_IMAGE_REQUEST = 1
+    private val sharedRepository: SharedRepository
+        get() = (application as MyApplication).sharedRepository
 
-    private lateinit var targetAdapter: SelectableImageAdapter
 
-    private val selectedImagesList = mutableListOf<WordUri>()
-    private val WordViewModel:  WordViewModel by viewModels()
     private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
     private lateinit var selectedWordUri: WordUri
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,9 +41,12 @@ class WizardActivity : FragmentActivity() {
         val wordAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
-            WordViewModel.wordList.value.map { it.word }
+            sharedRepository.wordViewModel.wordList.value.map {
+                it.word }
         )
+
         wordSpinner.adapter = wordAdapter
+        println("Kurt the ADHD legend ${  sharedRepository.wordViewModel.wordList.value.size}")
         //  val selectedWord = wordSpinner.selectedItemPosition(selectedPosition)
         // Set the OnItemSelectedListener for the Spinner
         wordSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -77,17 +71,24 @@ class WizardActivity : FragmentActivity() {
             // Handle OK button click, process the selected word from the Spinner
             val selectedPosition = wordSpinner.selectedItemPosition
             val selectedWord = wordAdapter.getItem(selectedPosition)
-            println("Dylan Rychlik the autistic legend $selectedWord")
+
 
             // Find the corresponding WordUri object from wordViewModel.wordList
-             selectedWordUri = WordViewModel.wordList.value.find { it.word == selectedWord }!!
+             selectedWordUri =  sharedRepository.wordViewModel.wordList.value.find { it.word == selectedWord }!!
 
-            selectedWordUri.imageResId?.let { it1 ->
+            if  (selectedPosition < 28) {
+                selectedWordUri.imageResId?.let { it1 ->
+                    WordViewModelSelectedImage.addWord(
+                        selectedWordUri.word,
+                        selectedWordUri.imageResId!!
+                    )
+                }
+            } else {
+            selectedWordUri.imageUri?.let { it1 ->
                 WordViewModelSelectedImage.addWord(selectedWordUri.word,
-                    selectedWordUri.imageResId!!
-                )
+                    selectedWordUri.imageResId!!,selectedWordUri.imageUri!!,selectedWordUri.soundUri!!)
             }
-
+            }
 
 //                val intent = Intent(Intent.ACTION_GET_CONTENT)
 //              intent.type = "image/*"
@@ -123,7 +124,7 @@ class WizardActivity : FragmentActivity() {
                 // Process the selected image URI here
                 // You can use the imageUri to update your WordViewModelSelectedImage
                 // using the addWord function
-                WordViewModelSelectedImage.addWord(selectedWordUri.word, imageUri, selectedWordUri.soundUri)
+                WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.soundUri!!)
             } else {
                 // Handle the case when the selected image URI is null
                 println("Error: Selected image URI is null.")

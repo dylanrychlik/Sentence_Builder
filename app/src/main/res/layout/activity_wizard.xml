@@ -16,7 +16,8 @@
     <Spinner
         android:id="@+id/word_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/okButton"

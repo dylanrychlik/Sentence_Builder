@@ -1,6 +1,7 @@
 package com.example.sentencebuilder
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,6 +12,8 @@ class WordViewModel: ViewModel() {
 
     private val _wordList = MutableStateFlow(listOf<WordUri>())
     val wordList: StateFlow<List<WordUri>> = _wordList.asStateFlow()
+    private val _wordInput = MutableStateFlow("")
+    // Observe wordList and provide a method to get the latest list
 
 
     init {
@@ -50,9 +53,17 @@ class WordViewModel: ViewModel() {
         }
     }
 
-    fun addWord(name: String, Uri: Uri,soundUri: Uri?) {
+    fun setWordInput(word: String) {
+        _wordInput.value = word
+    }
+    fun getWordsList(): List<WordUri> {
+        return wordList.value
+    }
+
+    fun addWord(name: String, imageUri: Uri, soundUri: Uri?) {
         _wordList.update {
-            it.plus(WordUri(name, 0,Uri,soundUri))        }
+            it + WordUri(name, imageUri = imageUri, soundUri = soundUri)
+        }
     }
     fun addWord(name: String, resId: Int) {
         _wordList.update {

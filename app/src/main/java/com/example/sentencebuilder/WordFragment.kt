@@ -1,21 +1,13 @@
 package com.example.sentencebuilder
 
-import android.content.ClipData
-import android.content.Intent
-import android.content.res.Resources
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageButton
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -55,10 +47,18 @@ class WordFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewnouns)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        adapter = WordUriListAdapter()
+        // Pass the outputFilePath from MainActivity to the WordUriListAdapter
+        val mainActivity = activity as MainActivity
+        adapter = WordUriListAdapter(mainActivity.outputFilePath)
         recyclerView.adapter = adapter
 
 
     }
 
 }
+
+
+
+
+
+

@@ -6,11 +6,15 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.MediaPlayer
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import java.io.File
+import java.io.IOException
 
 
 //makes a standard view holder class to hold the reclycler views
@@ -18,8 +22,8 @@ data //	ViewHolder, the View rendered in the RecyclerView
 class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
     private var mediaPlayer: MediaPlayer? = null
-
-    fun bindView(wordUri: WordUri) {
+    private val mainActivity = MainActivity()
+    fun bindView(wordUri: WordUri, outputFilePath: String?) {
         with(view.findViewById<CardView>(R.id.card_view_noun)) {
             val imageButton = findViewById<ImageButton>(R.id.image_button_noun)
 
@@ -50,17 +54,26 @@ class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
 
             }
             imageButton.setOnClickListener {
+                wordUri.soundUri?.let { soundUri ->
+                    // Try to create a MediaPlayer with the provided soundUri
+                    mediaPlayer?.release()
+                    mediaPlayer = MediaPlayer().apply {
+                        val contentResolver = view.context
+                        val audioFile = File(soundUri.path)
+                        val audioUri = FileProvider.getUriForFile(view.context, "${view.context.packageName}.fileprovider", audioFile)
 
+                        setDataSource(contentResolver, audioUri)
+                        setOnCompletionListener {
+                            mediaPlayer?.release()
+                            mediaPlayer = null
+                        }
+                        prepare()
+                        start()
+                    }
+                } ?: run {
 
-
-                /* wordUri.soundUri?.let { soundUri ->
-                    playSound(soundUri)
-                    mediaPlayer = MediaPlayer.create(view.context, R.raw.beach)
-                }*/
-                val imageResId = R.drawable.beach
-                try {
                     when (wordUri.imageResId) {
-                        imageResId -> {
+                        R.drawable.beach -> {
                             mediaPlayer?.release()
 
                             // Create a new MediaPlayer instance and set the data source
@@ -316,20 +329,22 @@ class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
                         }
 
                         else -> {
-                            // Image does not match any of the specified cases
-                            // Perform alternative actions here
+                            mediaPlayer?.release()
+
+                            // Create a new MediaPlayer instance and set the data source
+                            mainActivity.playRecordedAudio(outputFilePath)
+
+
+                            mediaPlayer?.start()
                         }
                     }
 
-                } catch (e: Exception) {
-                    println(e)
                 }
             }
         }
     }
 
-
-    private fun playSound(soundUri: Uri) {
+    fun playSound(soundUri: Uri) {
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
             setDataSource(view.context, soundUri)
@@ -350,5 +365,6 @@ class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
         override fun areContentsTheSame(oldItem: WordUri, newItem: WordUri): Boolean {
             return oldItem == newItem
         }
+
     }
 }
