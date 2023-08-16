@@ -60,14 +60,14 @@ class WordViewModel: ViewModel() {
         return wordList.value
     }
 
-    fun addWord(name: String, imageUri: Uri, soundUri: Uri?) {
+    fun addWord(name: String, imageUri: Uri, soundUri: Uri) {
         _wordList.update {
             it + WordUri(name, imageUri = imageUri, soundUri = soundUri)
         }
     }
-    fun addWord(name: String, resId: Int) {
+    fun addWord(name: String, resId: Int,soundUri: Uri) {
         _wordList.update {
-            it.plus(WordUri(name, resId))
+            it.plus(WordUri(name, resId, soundUri = soundUri))
         }
     }
 

@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
@@ -18,8 +17,10 @@ import java.io.File
 data
 class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.ViewHolder(view) {
     private val MainActivity = MainActivity()
-
     private var mediaPlayer: MediaPlayer? = null
+    private val mainActivity = MainActivity()
+
+    var audioUri: Uri? = null
 
     fun bindView(wordUri: WordUri) {
         with(view.findViewById<CardView>(R.id.card_view_selected_image)) {
@@ -55,19 +56,25 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
             }
             imageButton.setOnClickListener {
                 wordUri.soundUri?.let { soundUri ->
+
+
                     // Try to create a MediaPlayer with the provided soundUri
                     mediaPlayer?.release()
                     mediaPlayer = MediaPlayer().apply {
                         val contentResolver = view.context
                         val audioFile = soundUri.path?.let { it1 -> File(it1) }
-                        val audioUri = audioFile?.let { it1 ->
+                        val audioUri1 = audioFile?.let { it1 ->
                             FileProvider.getUriForFile(view.context, "${view.context.packageName}.fileprovider",
                                 it1
+
                             )
+
                         }
 
-                        if (audioUri != null) {
-                            setDataSource(contentResolver, audioUri)
+                        if (audioUri1 != null) {
+                            setDataSource(contentResolver, audioUri1)
+                             audioUri = audioUri1
+                            println("Drych the beer:$audioUri")
                         }
                         setOnCompletionListener {
                             mediaPlayer?.release()
@@ -75,10 +82,12 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
                         }
                         prepare()
                         start()
+
                     }
                 } ?: run {
 
                    // MainActivity.playRecordedAudio(sharedRepository.outputFilePath )
+
 
                     when (wordUri.imageResId) {
 
@@ -340,12 +349,18 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
                         else -> {
                             val applicationContext = context.applicationContext
                             val sharedRepository = (applicationContext as MyApplication).sharedRepository
-                            println("Test drych the duck: " + sharedRepository.outputFilePath)
+                          //  sharedRepository.wordViewModel.wordList.value.indexOf(WordUri.soundUri)
+                            val test = wordUri.word
+                            val test2 = sharedRepository.outputFileList.find { listItem ->
+                                println("Comparing '$listItem' with '$test'")
+                                listItem.contains(test)
+                            }
+                            println("Test Alex Dubious the retarded autistic legend:${test2} ")
 
-                           // println("Test drych the retarded car: $sound")
                             mediaPlayer?.release()
                            // MainActivity.playRecordedAudio(applicationContext, sharedRepository.outputFilePath)
-                            mediaPlayer = MediaPlayer.create(view.context,  sharedRepository.outputFilePath?.toUri())
+                           // mediaPlayer = MediaPlayer.create(view.context, value.toUri())
+                          //  mainActivity.playRecordedAudio(outputFilePath)
                             mediaPlayer?.start()
 
                         }

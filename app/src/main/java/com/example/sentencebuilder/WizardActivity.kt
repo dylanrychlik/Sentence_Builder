@@ -18,7 +18,7 @@ class WizardActivity() : FragmentActivity() {
     private val PICK_IMAGE_REQUEST = 1
     private val sharedRepository: SharedRepository
         get() = (application as MyApplication).sharedRepository
-
+    var outputFilePath: String? = null
 
     private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
     private lateinit var selectedWordUri: WordUri
@@ -125,6 +125,7 @@ class WizardActivity() : FragmentActivity() {
                 // You can use the imageUri to update your WordViewModelSelectedImage
                 // using the addWord function
                 WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.soundUri!!)
+
             } else {
                 // Handle the case when the selected image URI is null
                 println("Error: Selected image URI is null.")
