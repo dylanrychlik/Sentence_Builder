@@ -16,6 +16,8 @@
     <string name="enter_a_word">Enter a word</string>
     <string name="word_dictionary">Word Dictionary</string>
     <string name="app_description">The Sentence Builder App is a dynamic sound board app which allows you to add an image, a sound with image, a word for the image and sound as text and allows you build a sentence with the text. It is intended to help non verbal autistic children and other non verbal children communicate.</string>
+    <string name="add_word">Add Word</string>
+    <string name="select_a_word_from_the_dropdown">Select a Word from the Dropdown</string>
 
 
 </resources>
