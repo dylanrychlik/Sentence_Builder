@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
     private var recorder: MediaRecorder? = null
     private var mediaPlayer: MediaPlayer? = null
     private var recordingCounter = 0
-    private val wordSpinner = findViewById<Spinner>(R.id.word_spinner)
+
+    //private val wordSpinner = findViewById<Spinner>(R.id.word_spinner)
     private var uri: Uri? = null // Initialize uri as nullable Uri
 
     companion object {
@@ -80,79 +81,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        // Setup your spinner and button handling here
-        // ...
-        // Handle OK button click, process the selected word from the Spinner
-        val wordAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-           wordViewModel.wordList.value.map {
-                it.word }
-        )
 
-        wordSpinner.adapter = wordAdapter
-        println("Kurt the ADHD legend ${  sharedRepository.wordViewModel.wordList.value.size}")
-        //  val selectedWord = wordSpinner.selectedItemPosition(selectedPosition)
-        // Set the OnItemSelectedListener for the Spinner
-        wordSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // Handle the item selection here
-                val selectedWord = wordAdapter.getItem(position)
-                // Do something with the selected word
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle case when nothing is selected (optional)
-            }
-        }
-
-        val okButton = findViewById<Button>(R.id.okButton)
-        okButton.setOnClickListener {
-            // Handle OK button click, process the selected word from the Spinner
-            val selectedPosition = wordSpinner.selectedItemPosition
-            val selectedWord = wordAdapter.getItem(selectedPosition)
-
-
-            // Find the corresponding WordUri object from wordViewModel.wordList
-            selectedWordUri =  sharedRepository.wordViewModel.wordList.value.find { it.word == selectedWord }!!
-
-            if  (selectedPosition < 28) {
-                selectedWordUri.imageResId?.let { it1 ->
-                    WordViewModelSelectedImage.addWord(
-                        selectedWordUri.word,
-                        selectedWordUri.imageResId!!
-                    )
-                }
-            } else {
-                selectedWordUri.imageUri?.let { it1 ->
-                    WordViewModelSelectedImage.addWord(selectedWordUri.word,
-                        selectedWordUri.imageResId!!,selectedWordUri.imageUri!!,selectedWordUri.soundUri!!)
-                }
-            }
-
-//                val intent = Intent(Intent.ACTION_GET_CONTENT)
-//              intent.type = "image/*"
-//                startActivityForResult(intent, PICK_IMAGE_REQUEST)
-            println("Word list size: ${WordViewModelSelectedImage.wordList.value.size}")
-        }
-
-
-
-
-
-
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
-        cancelButton.setOnClickListener {
-            // Handle Cancel button click
-            finish()
-        }
         displayWordFragment()
-        displaySelectedWordFragment()
+
     }
     private fun showNextStep() {
         val intent = Intent(this, WizardActivity::class.java)
@@ -210,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                         // Process the selected image URI here
                         // You can use the imageUri to update your WordViewModelSelectedImage
                         // using the addWord function
-                        WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.soundUri!!)
+                        WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.outputfile!!,selectedWordUri.soundUri!!)
 
                     } else {
                         // Handle the case when the selected image URI is null
@@ -220,13 +151,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-//
-//        }
-//    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun startRecording() {
@@ -302,7 +227,7 @@ class MainActivity : AppCompatActivity() {
             //wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath?.toUri())
             outputFilePath?.toUri()
             //sharedRepository.outputFilePath?
-            wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath?.toUri()!!)
+            wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath!!,outputFilePath?.toUri()!!)
             val wordAdapter = ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -310,11 +235,12 @@ class MainActivity : AppCompatActivity() {
                     it.word }
             )
 
-            wordSpinner.adapter = wordAdapter
+           // wordSpinner.adapter = wordAdapter
             //val intent = Intent(this, WizardActivity::class.java)
             // WordViewModelSelectedImage = wordViewModel
           // sharedRepository.wordViewModel = WordViewModelSelectedImage
-            sharedRepository.wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath?.toUri()!!)
+           // wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath?.toUri()!!)
+            sharedRepository.wordViewModel.addWord(enteredWord, imageUri!!,outputFilePath!!, outputFilePath?.toUri()!!)
             sharedRepository.outputFilePath = outputFilePath
             println("Test AD Hoskings: "  + sharedRepository.outputFilePath)
 
@@ -332,19 +258,7 @@ class MainActivity : AppCompatActivity() {
 
         // Share the recorded audio file
     }
-//
-//    private fun shareAudioFile() {
-//        outputFilePath?.let { path ->
-//            val audioUri = Uri.parse(path)
-//            val shareIntent: Intent = Intent().apply {
-//                action = Intent.ACTION_SEND
-//                putExtra(Intent.EXTRA_STREAM, audioUri)
-//                type = "audio/*"
-//            }
-//            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            startActivity(Intent.createChooser(shareIntent, resources.getText(R.string.send_to)))
-//        }
-//    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -370,33 +284,6 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "playRecordedAudio: outputFilePath is null")
         }
     }
-    fun playRecordedAudio(context: Context, outputFilePath: String?) {
-        println("Drych the  outputFilePath: $outputFilePath")
-        println("Drych the  dachshund$outputFilePath")
-        if (outputFilePath != null) {
-            val file = File(outputFilePath)
-            val audioUri = FileProvider.getUriForFile(
-                context,
-                "${context.packageName}.fileprovider",
-                file
-            )
-
-            Log.d("MainActivity", "playRecordedAudio: audioUri=$audioUri")
-            // Rest of the code for MediaPlayer preparation and playback...
-        }
-
-        {
-            Log.e("MainActivity", "playRecordedAudio: outputFilePath is null")
-        }
-    }
-
-    private fun displaySelectedWordFragment() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.selected_word_fragment, fragment2, "SelectedWordFragment")
-            .commit()
-    }
-
-    // Other parts of the MainActivity class...
 
 
     private fun stopPlayback() {

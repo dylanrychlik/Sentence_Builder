@@ -86,7 +86,7 @@ class WizardActivity() : FragmentActivity() {
             } else {
             selectedWordUri.imageUri?.let { it1 ->
                 WordViewModelSelectedImage.addWord(selectedWordUri.word,
-                    selectedWordUri.imageResId!!,selectedWordUri.imageUri!!,selectedWordUri.soundUri!!)
+                    selectedWordUri.imageResId!!,selectedWordUri.imageUri!!,selectedWordUri.outputfile!!,selectedWordUri.soundUri!!)
             }
             }
 
@@ -124,7 +124,7 @@ class WizardActivity() : FragmentActivity() {
                 // Process the selected image URI here
                 // You can use the imageUri to update your WordViewModelSelectedImage
                 // using the addWord function
-                WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.soundUri!!)
+                WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.outputfile!!,selectedWordUri.soundUri!!)
 
             } else {
                 // Handle the case when the selected image URI is null

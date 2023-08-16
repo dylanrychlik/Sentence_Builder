@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
@@ -349,17 +350,14 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
                         else -> {
                             val applicationContext = context.applicationContext
                             val sharedRepository = (applicationContext as MyApplication).sharedRepository
-                          //  sharedRepository.wordViewModel.wordList.value.indexOf(WordUri.soundUri)
-                            val test = wordUri.word
-                            val test2 = sharedRepository.outputFileList.find { listItem ->
-                                println("Comparing '$listItem' with '$test'")
-                                listItem.contains(test)
-                            }
-                            println("Test Alex Dubious the retarded autistic legend:${test2} ")
+                        //  sharedRepository.wordViewModel.wordList.
+                            val test = wordUri.outputfile
+                           // val test2 = sharedRepository.outputFileList.size
+                            println("Test Alex Dubious the retarded autistic legend:${test} ")
 
                             mediaPlayer?.release()
                            // MainActivity.playRecordedAudio(applicationContext, sharedRepository.outputFilePath)
-                           // mediaPlayer = MediaPlayer.create(view.context, value.toUri())
+                            mediaPlayer = MediaPlayer.create(view.context, wordUri.outputfile.toUri())
                           //  mainActivity.playRecordedAudio(outputFilePath)
                             mediaPlayer?.start()
 

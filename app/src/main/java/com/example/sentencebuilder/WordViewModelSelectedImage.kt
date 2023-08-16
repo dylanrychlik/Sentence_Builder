@@ -26,19 +26,24 @@ class WordViewModelSelectedImage: ViewModel() {
         }
     }
 
-    fun addWord(name: String, imageUri: Uri, soundUri: Uri) {
+    fun addWord(name: String, imageUri: Uri, outputfile: String,soundUri: Uri) {
         _wordList.update {
-            it + WordUri(name, imageUri = imageUri, soundUri = soundUri)
+            it + WordUri(name, imageUri = imageUri, outputfile = outputfile,soundUri = soundUri)
         }
     }
-    fun addWord(name: String, resId: Int,imageUri: Uri, soundUri: Uri) {
+    fun addWord(name: String, resId: Int,imageUri: Uri,soundUri: Uri) {
         _wordList.update {
-            it.plus(WordUri(name, resId,imageUri,soundUri))
+            it.plus(WordUri(name, resId,imageUri,"",soundUri))
+        }
+    }
+    fun addWord(name: String, resId: Int,imageUri: Uri,outputfile: String,soundUri: Uri) {
+        _wordList.update {
+            it.plus(WordUri(name, resId,imageUri,outputfile,soundUri))
         }
     }
     fun addWord(name: String, resId: Int) {
         _wordList.update {
-            it.plus(WordUri(name, resId))
+            it.plus(WordUri(name, resId,null,""))
         }
     }
 

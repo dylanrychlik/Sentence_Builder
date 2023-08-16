@@ -30,20 +30,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/stop_recording_button"
-        android:layout_width="124dp"
-        android:layout_height="59dp"
-        android:layout_gravity="end"
-        android:text="Stop recording" />
 
     <TextView
-        android:id="@+id/build2"
-        android:layout_width="124dp"
+        android:id="@+id/description2"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:layout_margin="16dp"
-        android:text="@string/add_an_image" />
+        android:layout_gravity="start|top"
+        android:layout_margin="6dp"
+        android:text="@string/app_description" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -68,40 +62,17 @@
         android:layout_gravity="center|bottom"
         android:layout_margin="10dp"
         android:textStyle="bold"
-        android:text="@string/word_inventory" />
+        android:text="@string/word_dictionary" />
 
 
-    <FrameLayout
+    <fragment
         android:id="@+id/word_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name= "com.example.sentencebuilder.WordFragment"
         />
 
-    <Spinner
-        android:id="@+id/word_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown" />
 
-    <Button
-        android:id="@+id/okButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ok_button" />
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel_button" />
-
-    <FrameLayout
-        android:id="@+id/selected_word_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name= "com.example.sentencebuilder.SelectedWordFragment"
-        />
 </LinearLayout>
 
 </ScrollView >

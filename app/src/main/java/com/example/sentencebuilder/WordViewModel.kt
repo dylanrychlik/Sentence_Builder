@@ -20,34 +20,34 @@ class WordViewModel: ViewModel() {
         _wordList.update {
             listOf(
                 //WordUri("fish",0,Uri.parse("file:///sdcard/Download/image.jpg")),
-                WordUri("Beach", R.drawable.beach),
-                WordUri("Child", R.drawable.child),
-                WordUri("City", R.drawable.city),
-                WordUri("Dog", R.drawable.dog),
-                WordUri("Man", R.drawable.man),
-                WordUri("Woman", R.drawable.woman),
-                WordUri("Cat", R.drawable.cat),
-                WordUri("Eat", R.drawable.eat),
-                WordUri("Make", R.drawable.make),
-                WordUri("Guess", R.drawable.guess),
-                WordUri("Find", R.drawable.find),
-                WordUri("Call", R.drawable.call),
-                WordUri("Buy", R.drawable.buy),
-                WordUri("Break", R.drawable.thewordbreak),
-                WordUri("Think", R.drawable.think),
-                WordUri("Listen", R.drawable.listen),
-                WordUri("Long", R.drawable.thewordlong),
-                WordUri("Light", R.drawable.light),
-                WordUri("Funny", R.drawable.funny),
-                WordUri("I", R.drawable.thewordi),
-                WordUri("it", R.drawable.it),
-                WordUri("different", R.drawable.different),
-                WordUri("him", R.drawable.him),
-                WordUri("Her", R.drawable.her),
-                WordUri("They", R.drawable.they),
-                WordUri("Them", R.drawable.them),
-                WordUri("As", R.drawable.as_the_word),
-                WordUri("Have", R.drawable.have),
+                WordUri("Beach", R.drawable.beach,null,"",null,null),
+                WordUri("Child", R.drawable.child,null,"",null,null),
+                WordUri("City", R.drawable.city,null,"",null,null),
+                WordUri("Dog", R.drawable.dog,null,"",null,null),
+                WordUri("Man", R.drawable.man,null,"",null,null),
+                WordUri("Woman", R.drawable.woman,null,"",null,null),
+                WordUri("Cat", R.drawable.cat,null,"",null,null),
+                WordUri("Eat", R.drawable.eat,null,"",null,null),
+                WordUri("Make", R.drawable.make,null,"",null,null),
+                WordUri("Guess", R.drawable.guess,null,"",null,null),
+                WordUri("Find", R.drawable.find,null,"",null,null),
+                WordUri("Call", R.drawable.call,null,"",null,null),
+                WordUri("Buy", R.drawable.buy,null,"",null,null),
+                WordUri("Break", R.drawable.thewordbreak,null,"",null,null),
+                WordUri("Think", R.drawable.think,null,"",null,null),
+                WordUri("Listen", R.drawable.listen,null,"",null,null),
+                WordUri("Long", R.drawable.thewordlong,null,"",null,null),
+                WordUri("Light", R.drawable.light,null,"",null,null),
+                WordUri("Funny", R.drawable.funny,null,"",null,null),
+                WordUri("I", R.drawable.thewordi,null,"",null,null),
+                WordUri("it", R.drawable.it,null,"",null,null),
+                WordUri("different", R.drawable.different,null,"",null,null),
+                WordUri("him", R.drawable.him,null,"",null,null),
+                WordUri("Her", R.drawable.her,null,"",null,null),
+                WordUri("They", R.drawable.they,null,"",null,null),
+                WordUri("Them", R.drawable.them,null,"",null,null),
+                WordUri("As", R.drawable.as_the_word,null,"",null,null),
+                WordUri("Have", R.drawable.have,null,"",null,null),
 
                 )
         }
@@ -60,14 +60,14 @@ class WordViewModel: ViewModel() {
         return wordList.value
     }
 
-    fun addWord(name: String, imageUri: Uri, soundUri: Uri) {
+    fun addWord(name: String, imageUri: Uri, outputfile: String, soundUri: Uri,) {
         _wordList.update {
-            it + WordUri(name, imageUri = imageUri, soundUri = soundUri)
+            it + WordUri(name, imageUri = imageUri, outputfile = outputfile,soundUri = soundUri)
         }
     }
-    fun addWord(name: String, resId: Int,soundUri: Uri) {
+    fun addWord(name: String, resId: Int,outputfile: String,soundUri: Uri) {
         _wordList.update {
-            it.plus(WordUri(name, resId, soundUri = soundUri))
+            it.plus(WordUri(name, resId,outputfile = outputfile, soundUri = soundUri))
         }
     }
 
