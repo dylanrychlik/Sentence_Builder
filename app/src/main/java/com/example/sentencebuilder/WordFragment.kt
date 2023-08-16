@@ -27,7 +27,6 @@ class WordFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 wordViewModel.wordList.collect {
-                    println("Turtle tester who is getting fired Monday " + it.size)
                     adapter.submitList(it)
                 }
             }

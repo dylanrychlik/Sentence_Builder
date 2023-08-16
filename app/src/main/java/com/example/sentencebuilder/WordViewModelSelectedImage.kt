@@ -19,7 +19,6 @@ class WordViewModelSelectedImage: ViewModel() {
     init {
         _wordList.update {
             listOf(
-                //WordUri("Beach", R.drawable.beach),
 
 
             )

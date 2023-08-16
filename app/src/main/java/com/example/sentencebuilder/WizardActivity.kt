@@ -18,7 +18,6 @@ class WizardActivity() : FragmentActivity() {
     private val PICK_IMAGE_REQUEST = 1
     private val sharedRepository: SharedRepository
         get() = (application as MyApplication).sharedRepository
-    var outputFilePath: String? = null
 
     private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
     private lateinit var selectedWordUri: WordUri
@@ -46,8 +45,6 @@ class WizardActivity() : FragmentActivity() {
         )
 
         wordSpinner.adapter = wordAdapter
-        println("Kurt the ADHD legend ${  sharedRepository.wordViewModel.wordList.value.size}")
-        //  val selectedWord = wordSpinner.selectedItemPosition(selectedPosition)
         // Set the OnItemSelectedListener for the Spinner
         wordSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -90,16 +87,8 @@ class WizardActivity() : FragmentActivity() {
             }
             }
 
-//                val intent = Intent(Intent.ACTION_GET_CONTENT)
-//              intent.type = "image/*"
-//                startActivityForResult(intent, PICK_IMAGE_REQUEST)
-                println("Word list size: ${WordViewModelSelectedImage.wordList.value.size}")
+
             }
-
-
-
-
-
 
         val cancelButton = findViewById<Button>(R.id.cancelButton)
         cancelButton.setOnClickListener {

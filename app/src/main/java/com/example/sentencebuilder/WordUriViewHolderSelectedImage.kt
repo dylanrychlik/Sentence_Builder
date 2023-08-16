@@ -17,9 +17,7 @@ import java.io.File
 
 data
 class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.ViewHolder(view) {
-    private val MainActivity = MainActivity()
     private var mediaPlayer: MediaPlayer? = null
-    private val mainActivity = MainActivity()
 
     var audioUri: Uri? = null
 
@@ -34,15 +32,15 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
             else if (wordUri.imageUri != null) {
                 val inputStream = view.context.contentResolver.openInputStream(wordUri.imageUri!!)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
-// Define the desired width and height for the resized bitmap
+                // Define the desired width and height for the resized bitmap
                 val desiredWidth = 500
                 val desiredHeight = 500
 
-// Calculate the scale factors for width and height
+                // Calculate the scale factors for width and height
                 val scaleWidth = desiredWidth.toFloat() / bitmap.width
                 val scaleHeight = desiredHeight.toFloat() / bitmap.height
 
-// Create a matrix to apply the scaling
+                // Create a matrix to apply the scaling
                 val matrix = Matrix()
                 matrix.postScale(scaleWidth, scaleHeight)
 
@@ -75,7 +73,7 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
                         if (audioUri1 != null) {
                             setDataSource(contentResolver, audioUri1)
                              audioUri = audioUri1
-                            println("Drych the beer:$audioUri")
+
                         }
                         setOnCompletionListener {
                             mediaPlayer?.release()
@@ -86,8 +84,6 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
 
                     }
                 } ?: run {
-
-                   // MainActivity.playRecordedAudio(sharedRepository.outputFilePath )
 
 
                     when (wordUri.imageResId) {
@@ -348,17 +344,10 @@ class WordUriViewHolderSelectedImage(private val view: View) : RecyclerView.View
                         }
 
                         else -> {
-                            val applicationContext = context.applicationContext
-                            val sharedRepository = (applicationContext as MyApplication).sharedRepository
-                        //  sharedRepository.wordViewModel.wordList.
-                            val test = wordUri.outputfile
-                           // val test2 = sharedRepository.outputFileList.size
-                            println("Test Alex Dubious the retarded autistic legend:${test} ")
 
                             mediaPlayer?.release()
-                           // MainActivity.playRecordedAudio(applicationContext, sharedRepository.outputFilePath)
+                           // Play sound from recorded output file
                             mediaPlayer = MediaPlayer.create(view.context, wordUri.outputfile.toUri())
-                          //  mainActivity.playRecordedAudio(outputFilePath)
                             mediaPlayer?.start()
 
                         }

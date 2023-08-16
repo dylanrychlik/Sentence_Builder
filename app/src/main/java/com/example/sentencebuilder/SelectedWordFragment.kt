@@ -28,7 +28,6 @@ class SelectedWordFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 WordViewModelSelectedImage.wordList.collect {
-                    println("Turtle tester who is getting fired Sunday by Kurt " + it.size)
                     adapter.submitList(it)
                 }
             }

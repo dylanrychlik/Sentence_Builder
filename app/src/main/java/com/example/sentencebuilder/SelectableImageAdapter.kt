@@ -12,7 +12,6 @@ class SelectableImageAdapter(): ListAdapter<WordUri, WordUriViewHolderSelectedIm
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordUriViewHolderSelectedImage {
-       val MainActivity = MainActivity()
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_view_selected_image, parent, false)
                 as CardView

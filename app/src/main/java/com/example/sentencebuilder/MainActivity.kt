@@ -32,16 +32,13 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val RECORD_AUDIO_PERMISSION_CODE = 101
-    private  val fragment2 = SelectedWordFragment()
 
     private val sharedRepository: SharedRepository
         get() = (application as MyApplication).sharedRepository
     private val WRITE_EXTERNAL_STORAGE_PERMISSION_CODE = 102
     private val PICK_IMAGE_REQUEST = 1
     private val wordViewModel: WordViewModel by viewModels()
-    private var currentStep = 1
     private val fragment = WordFragment()
-    private val wizardActivity = WizardActivity()
     private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
     private lateinit var selectedWordUri: WordUri
     private var imageUri: Uri? = null
@@ -49,9 +46,6 @@ class MainActivity : AppCompatActivity() {
     private var recorder: MediaRecorder? = null
     private var mediaPlayer: MediaPlayer? = null
     private var recordingCounter = 0
-
-    //private val wordSpinner = findViewById<Spinner>(R.id.word_spinner)
-    private var uri: Uri? = null // Initialize uri as nullable Uri
 
     companion object {
         const val WIZARD_ACTIVITY_REQUEST_CODE = 123 // You can use any integer value
@@ -62,26 +56,14 @@ class MainActivity : AppCompatActivity() {
 
         requestPermissions()
 
-
-
-
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
             initializeAddButton()
         }
-
-
-
         val build_sentence = findViewById<Button>(R.id.build_sentence)
         build_sentence.setOnClickListener {
             showNextStep()
-            println("Drych the legend " + listOf(WordViewModelSelectedImage.wordList).size)
         }
-
-
-
-
-
         displayWordFragment()
 
     }
@@ -161,8 +143,6 @@ class MainActivity : AppCompatActivity() {
 
 // In your startRecording function:
         val filename = "AUDIO_${timeStamp}_${++recordingCounter}.m4a"
-//        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-//        val filename = "AUDIO_${timeStamp}_.m4a"
 
         // Get the app-specific external directory to save the audio file
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC)
@@ -235,24 +215,12 @@ class MainActivity : AppCompatActivity() {
                     it.word }
             )
 
-           // wordSpinner.adapter = wordAdapter
-            //val intent = Intent(this, WizardActivity::class.java)
-            // WordViewModelSelectedImage = wordViewModel
-          // sharedRepository.wordViewModel = WordViewModelSelectedImage
-           // wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath?.toUri()!!)
+           //Add word
             sharedRepository.wordViewModel.addWord(enteredWord, imageUri!!,outputFilePath!!, outputFilePath?.toUri()!!)
             sharedRepository.outputFilePath = outputFilePath
-            println("Test AD Hoskings: "  + sharedRepository.outputFilePath)
 
             sharedRepository.outputFileList.add(WordUriSelectedImage(enteredWord, sharedRepository.outputFilePath?.toUri()!!).toString())
 
-
-
-            println("Test Dan Dubicki $enteredWord")
-
-           // onRecordingCompleted()
-            // outputFilePath = null  // set outputFilePath to null after adding the word
-            // playRecordedAudio(outputFilePath)
         }
 
 
@@ -291,7 +259,3 @@ class MainActivity : AppCompatActivity() {
         mediaPlayer = null
     }
 }
-
-
-
-

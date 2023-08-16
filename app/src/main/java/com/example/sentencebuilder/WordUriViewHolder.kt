@@ -32,19 +32,19 @@ class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
             } else if (wordUri.imageUri != null) {
                 val inputStream = view.context.contentResolver.openInputStream(wordUri.imageUri!!)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
-// Define the desired width and height for the resized bitmap
+                // Define the desired width and height for the resized bitmap
                 val desiredWidth = 500
                 val desiredHeight = 500
 
-// Calculate the scale factors for width and height
+                // Calculate the scale factors for width and height
                 val scaleWidth = desiredWidth.toFloat() / bitmap.width
                 val scaleHeight = desiredHeight.toFloat() / bitmap.height
 
-// Create a matrix to apply the scaling
+                // Create a matrix to apply the scaling
                 val matrix = Matrix()
                 matrix.postScale(scaleWidth, scaleHeight)
 
-// Create the resized bitmap
+                // Create the resized bitmap
                 val resizedBitmap =
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
 
@@ -341,17 +341,6 @@ class WordUriViewHolder(private val view: View) : RecyclerView.ViewHolder(view) 
 
                 }
             }
-        }
-    }
-
-    fun playSound(soundUri: Uri) {
-        mediaPlayer?.release()
-        mediaPlayer = MediaPlayer().apply {
-            setDataSource(view.context, soundUri)
-            setOnPreparedListener {
-                it.start()
-            }
-            mediaPlayer?.start()
         }
     }
 
