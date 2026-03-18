@@ -1,9 +1,7 @@
 package com.example.sentencebuilder
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,30 +11,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 
-class WizardActivity : AppCompatActivity(), SelectedWordActions {
-    private val wordViewModel: WordViewModel by viewModels()
+class WizardActivity : AppCompatActivity(), SelectedWordActions, WizardWordPickerActions {
     private val selectedWordViewModel: WordViewModelSelectedImage by viewModels()
 
-    private lateinit var wordSpinner: Spinner
     private lateinit var sentencePreviewTextView: TextView
     private lateinit var selectedCountTextView: TextView
     private lateinit var speakSentenceButton: Button
-    private var availableWords: List<WordUri> = emptyList()
     private var latestSentenceText: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wizard)
 
-        wordSpinner = findViewById(R.id.word_spinner)
         sentencePreviewTextView = findViewById(R.id.sentencePreviewText)
         selectedCountTextView = findViewById(R.id.selectedWordCountText)
         speakSentenceButton = findViewById(R.id.speakSentenceButton)
 
-        findViewById<Button>(R.id.okButton).setOnClickListener {
-            val selectedWord = availableWords.getOrNull(wordSpinner.selectedItemPosition) ?: return@setOnClickListener
-            selectedWordViewModel.addSelectedWord(selectedWord.id)
-        }
         speakSentenceButton.setOnClickListener {
             if (latestSentenceText.isBlank()) {
                 Toast.makeText(this, R.string.sentence_readout_empty_message, Toast.LENGTH_SHORT).show()
@@ -51,12 +41,22 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
+                .replace(R.id.wizard_word_picker_container, WizardWordPickerFragment(), "WizardWordPickerFragment")
+                .commit()
+            supportFragmentManager.beginTransaction()
                 .replace(R.id.selected_word_fragment_container, SelectedWordFragment(), "SelectedWordFragment")
                 .commit()
         }
 
-        observeInventoryWords()
         observeSelectedWords()
+    }
+
+    override fun onAddWordFromWizard(wordUri: WordUri) {
+        selectedWordViewModel.addSelectedWord(wordUri.id)
+    }
+
+    override fun onPreviewWizardWord(wordUri: WordUri) {
+        WordAudioPlayer.play(this, wordUri)
     }
 
     override fun onPlaySelectedWord(wordUri: WordUri) {
@@ -70,24 +70,6 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions {
     override fun onDestroy() {
         WordAudioPlayer.release()
         super.onDestroy()
-    }
-
-    private fun observeInventoryWords() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wordViewModel.wordList.collect { words ->
-                    availableWords = words
-                    val spinnerAdapter = ArrayAdapter(
-                        this@WizardActivity,
-                        android.R.layout.simple_spinner_item,
-                        words.map { it.word },
-                    ).apply {
-                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    }
-                    wordSpinner.adapter = spinnerAdapter
-                }
-            }
-        }
     }
 
     private fun observeSelectedWords() {

@@ -39,7 +39,9 @@
     <string name="speak_sentence_button">Speak sentence</string>
     <string name="sentence_readout_empty_message">Add words before reading the sentence out loud.</string>
     <string name="composer_section_title">Composer</string>
-    <string name="composer_section_helper">Pick a word from your library, then add it to the sentence below.</string>
+    <string name="composer_section_helper">Browse your image library here and build the sentence directly from the word cards.</string>
+    <string name="wizard_scroll_instruction">Tap an image card to add it to the sentence. Use the play button to preview a single word first.</string>
+    <string name="wizard_word_picker_helper">Tap image to add. Play button previews audio.</string>
     <string name="selected_words_section_title">Selected word tiles</string>
     <string name="selected_words_section_helper">Tap play to hear a single word, or remove a tile to adjust the sentence.</string>
     <string name="add_to_sentence_button">Add to sentence</string>
