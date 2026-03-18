@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="18dp"
+    app:cardBackgroundColor="@color/playful_sky"
+    app:cardCornerRadius="20dp"
     app:cardElevation="4dp"
-    app:strokeColor="@color/green_light"
+    app:strokeColor="@color/playful_secondary"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -38,6 +39,7 @@
                 android:contentDescription="@string/delete_image_button_description"
                 android:padding="8dp"
                 android:src="@android:drawable/ic_menu_delete"
+                app:tint="@color/playful_primary"
                 android:visibility="gone" />
         </FrameLayout>
 
@@ -47,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/ink"
             android:textStyle="bold"
             tools:text="Beach" />
 
@@ -56,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="@color/ink_muted"
             tools:text="Tap to hear the word" />
 
         <ImageButton
@@ -67,7 +71,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/play_word_button_description"
             android:padding="8dp"
-            android:src="@android:drawable/ic_media_play" />
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/playful_secondary" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

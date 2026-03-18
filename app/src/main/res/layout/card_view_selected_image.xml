@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/warm_surface"
+    app:cardBackgroundColor="@color/playful_lavender"
     app:cardCornerRadius="22dp"
     app:cardElevation="0dp"
-    app:strokeColor="@color/builder_card_stroke"
+    app:strokeColor="@color/playful_secondary"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -38,7 +38,7 @@
                 android:contentDescription="@string/remove_word_button_description"
                 android:padding="8dp"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
-                app:tint="@color/builder_action" />
+                app:tint="@color/playful_primary" />
         </FrameLayout>
 
         <TextView
@@ -61,7 +61,7 @@
             android:contentDescription="@string/play_word_button_description"
             android:padding="8dp"
             android:src="@android:drawable/ic_media_play"
-            app:tint="@color/green" />
+            app:tint="@color/playful_accent_dark" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
