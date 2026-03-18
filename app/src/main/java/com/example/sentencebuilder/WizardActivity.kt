@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -19,7 +20,9 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions {
     private lateinit var wordSpinner: Spinner
     private lateinit var sentencePreviewTextView: TextView
     private lateinit var selectedCountTextView: TextView
+    private lateinit var speakSentenceButton: Button
     private var availableWords: List<WordUri> = emptyList()
+    private var latestSentenceText: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +31,19 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions {
         wordSpinner = findViewById(R.id.word_spinner)
         sentencePreviewTextView = findViewById(R.id.sentencePreviewText)
         selectedCountTextView = findViewById(R.id.selectedWordCountText)
+        speakSentenceButton = findViewById(R.id.speakSentenceButton)
 
         findViewById<Button>(R.id.okButton).setOnClickListener {
             val selectedWord = availableWords.getOrNull(wordSpinner.selectedItemPosition) ?: return@setOnClickListener
             selectedWordViewModel.addSelectedWord(selectedWord.id)
+        }
+        speakSentenceButton.setOnClickListener {
+            if (latestSentenceText.isBlank()) {
+                Toast.makeText(this, R.string.sentence_readout_empty_message, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            WordAudioPlayer.speakText(this, latestSentenceText, "built-sentence")
         }
         findViewById<Button>(R.id.cancelButton).setOnClickListener {
             finish()
@@ -82,16 +94,19 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedWordViewModel.wordList.collect { selectedWords ->
+                    latestSentenceText = selectedWords.joinToString(separator = " ") { it.word }
                     sentencePreviewTextView.text = if (selectedWords.isEmpty()) {
                         getString(R.string.sentence_preview_placeholder)
                     } else {
-                        selectedWords.joinToString(separator = " ") { it.word }
+                        latestSentenceText
                     }
                     selectedCountTextView.text = resources.getQuantityString(
                         R.plurals.selected_word_count,
                         selectedWords.size,
                         selectedWords.size,
                     )
+                    speakSentenceButton.isEnabled = selectedWords.isNotEmpty()
+                    speakSentenceButton.alpha = if (selectedWords.isEmpty()) 0.55f else 1f
                 }
             }
         }

@@ -31,6 +31,11 @@ object WordAudioPlayer {
         speak(context.applicationContext, word.word)
     }
 
+    fun speakText(context: Context, text: String, utteranceId: String = "sentence-preview") {
+        stopPlayback()
+        speak(context.applicationContext, text, utteranceId)
+    }
+
     fun release() {
         stopPlayback()
         textToSpeech?.stop()
@@ -40,14 +45,14 @@ object WordAudioPlayer {
         pendingText = null
     }
 
-    private fun speak(context: Context, text: String) {
+    private fun speak(context: Context, text: String, utteranceId: String = "word-preview") {
         if (textToSpeech == null) {
             pendingText = text
             textToSpeech = TextToSpeech(context) { status ->
                 isTextToSpeechReady = status == TextToSpeech.SUCCESS
                 if (isTextToSpeechReady) {
                     textToSpeech?.language = Locale.getDefault()
-                    pendingText?.let(::speakNow)
+                    pendingText?.let { speakNow(it, utteranceId) }
                     pendingText = null
                 }
             }
@@ -55,14 +60,14 @@ object WordAudioPlayer {
         }
 
         if (isTextToSpeechReady) {
-            speakNow(text)
+            speakNow(text, utteranceId)
         } else {
             pendingText = text
         }
     }
 
-    private fun speakNow(text: String) {
-        textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "word-preview")
+    private fun speakNow(text: String, utteranceId: String) {
+        textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
     }
 
     private fun stopPlayback() {
