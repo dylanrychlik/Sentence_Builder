@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/ink_muted"
         android:text="@string/selected_empty_state"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:visibility="gone" />

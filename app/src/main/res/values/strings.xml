@@ -14,10 +14,12 @@
     <string name="add_word_helper">Choose an image, record the spoken word, and save it to your library.</string>
     <string name="word_dictionary_helper">Tap any card to hear it. Custom cards can be deleted safely.</string>
     <string name="select_a_word_from_the_dropdown">Choose a word and add it to the sentence preview.</string>
+    <string name="sentence_builder_eyebrow">Sentence Studio</string>
+    <string name="build_phrase_title">Build a phrase that can be spoken out loud</string>
     <string name="custom_word_helper">Custom word with recorded audio</string>
     <string name="default_word_helper">Built-in word. Tap to hear it.</string>
     <string name="inventory_empty_state">Your word library is empty.</string>
-    <string name="selected_empty_state">No words have been added to the sentence yet.</string>
+    <string name="selected_empty_state">No words yet.\nAdd a few from the composer above to build a sentence.</string>
     <string name="recording_dialog_title">Record word audio</string>
     <string name="recording_dialog_message">Recording starts immediately. Stop when you are done speaking the word.</string>
     <string name="stop_recording_button">Stop recording</string>
@@ -34,6 +36,12 @@
     <string name="delete_image_success">Custom image deleted.</string>
     <string name="sentence_preview_label">Sentence preview</string>
     <string name="sentence_preview_placeholder">Your sentence will appear here as you add words.</string>
+    <string name="speak_sentence_button">Speak sentence</string>
+    <string name="sentence_readout_empty_message">Add words before reading the sentence out loud.</string>
+    <string name="composer_section_title">Composer</string>
+    <string name="composer_section_helper">Pick a word from your library, then add it to the sentence below.</string>
+    <string name="selected_words_section_title">Selected word tiles</string>
+    <string name="selected_words_section_helper">Tap play to hear a single word, or remove a tile to adjust the sentence.</string>
     <string name="add_to_sentence_button">Add to sentence</string>
     <string name="done_button">Done</string>
 

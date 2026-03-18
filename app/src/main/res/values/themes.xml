@@ -6,7 +6,10 @@
         <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/blue_dark</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSurface">@color/warm_surface</item>
+        <item name="colorOnSurface">@color/ink</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/warm_background</item>
+        <item name="android:windowBackground">@color/warm_background</item>
     </style>
 </resources>
