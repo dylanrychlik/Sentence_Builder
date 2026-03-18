@@ -1,261 +1,219 @@
 package com.example.sentencebuilder
 
 import android.Manifest
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Spinner
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
-class MainActivity : AppCompatActivity() {
-    private val RECORD_AUDIO_PERMISSION_CODE = 101
-
-    private val sharedRepository: SharedRepository
-        get() = (application as MyApplication).sharedRepository
-    private val WRITE_EXTERNAL_STORAGE_PERMISSION_CODE = 102
-    private val PICK_IMAGE_REQUEST = 1
-    private val wordViewModel: WordViewModel by viewModels()
-    private val fragment = WordFragment()
-    private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
-    private lateinit var selectedWordUri: WordUri
-    private var imageUri: Uri? = null
-    var outputFilePath: String? = null
-    private var recorder: MediaRecorder? = null
-    private var mediaPlayer: MediaPlayer? = null
-    private var recordingCounter = 0
-
+class MainActivity : AppCompatActivity(), WordInventoryActions, RecordingDialogListener, AddWordDialogListener {
     companion object {
-        const val WIZARD_ACTIVITY_REQUEST_CODE = 123 // You can use any integer value
+        private const val RECORD_AUDIO_PERMISSION_CODE = 101
+        private const val STATE_PENDING_IMAGE_PATH = "pending_image_path"
+        private const val STATE_PENDING_AUDIO_PATH = "pending_audio_path"
     }
+
+    private val wordViewModel: WordViewModel by viewModels()
+    private var pendingImageFile: File? = null
+    private var pendingAudioFile: File? = null
+    private var recorder: MediaRecorder? = null
+    private var isRecording = false
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri == null) {
+            return@registerForActivityResult
+        }
+
+        try {
+            cleanupPendingMedia()
+            takeImagePermissions(uri)
+            pendingImageFile = wordViewModel.importPendingImage(uri)
+            RecordingDialogFragment().show(supportFragmentManager, "RecordingDialog")
+        } catch (exception: Exception) {
+            showToast(getString(R.string.image_import_failed))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        requestPermissions()
+        pendingImageFile = savedInstanceState?.getString(STATE_PENDING_IMAGE_PATH)?.let(::File)?.takeIf(File::exists)
+        pendingAudioFile = savedInstanceState?.getString(STATE_PENDING_AUDIO_PATH)?.let(::File)?.takeIf(File::exists)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener {
-            initializeAddButton()
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            launchImagePicker()
         }
-        val build_sentence = findViewById<Button>(R.id.build_sentence)
-        build_sentence.setOnClickListener {
-            showNextStep()
-        }
-        displayWordFragment()
-
-    }
-    private fun showNextStep() {
-        val intent = Intent(this, WizardActivity::class.java)
-        //intent.a(wordViewModel) // Pass the reference of your WordViewModel
-        //shareAudioFile()
-        startActivityForResult(intent, WIZARD_ACTIVITY_REQUEST_CODE)
-    }
-    private fun requestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.RECORD_AUDIO),
-                RECORD_AUDIO_PERMISSION_CODE
-            )
+        findViewById<Button>(R.id.build_sentence).setOnClickListener {
+            startActivity(Intent(this, WizardActivity::class.java))
         }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                WRITE_EXTERNAL_STORAGE_PERMISSION_CODE
-            )
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.word_fragment_container, WordFragment(), "WordFragment")
+                .commit()
         }
     }
 
-    private fun initializeAddButton() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_PENDING_IMAGE_PATH, pendingImageFile?.absolutePath)
+        outState.putString(STATE_PENDING_AUDIO_PATH, pendingAudioFile?.absolutePath)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onPlayWord(wordUri: WordUri) {
+        WordAudioPlayer.play(this, wordUri)
+    }
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            data?.data?.let { imageUri ->
-                Log.d("MainActivity", "onActivityResult: image selected, checking permissions")
-                this.imageUri = imageUri
+    override fun onDeleteWord(wordUri: WordUri) {
+        if (!wordUri.isCustom) {
+            return
+        }
 
-                val recordingDialog = RecordingDialogFragment()
-               // recordingDialog.setTargetFragment(recordingDialog, 0) // Set the target fragment
-                recordingDialog.show(supportFragmentManager, "RecordingDialog")                // Start recording after the image is selected
-                if (requestCode == WIZARD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                   // val imageUri = data?.getParcelableExtra<Uri>("imageUri")
-                    val audioUri = data?.getParcelableExtra<Uri>("audioUri")
-                    outputFilePath = audioUri.toString()
-                    val imageUri = data?.data
-
-                    if (imageUri != null) {
-                        // Process the selected image URI here
-                        // You can use the imageUri to update your WordViewModelSelectedImage
-                        // using the addWord function
-                        WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.outputfile!!,selectedWordUri.soundUri!!)
-
+        AlertDialog.Builder(this)
+            .setTitle(R.string.delete_image_title)
+            .setMessage(getString(R.string.delete_image_message, wordUri.word))
+            .setPositiveButton(R.string.delete_button) { _, _ ->
+                val deleteResult = wordViewModel.deleteWord(wordUri.id)
+                if (deleteResult.deletedWord != null) {
+                    val message = if (deleteResult.removedSelectedCount > 0) {
+                        getString(R.string.delete_image_success_with_selection, deleteResult.removedSelectedCount)
                     } else {
-                        // Handle the case when the selected image URI is null
-                        println("Error: Selected image URI is null.")
+                        getString(R.string.delete_image_success)
                     }
+                    showToast(message)
                 }
             }
-        }
+            .setNegativeButton(R.string.cancel_button, null)
+            .show()
     }
 
+    override fun onStartRecordingRequested() {
+        if (!hasRecordAudioPermission()) {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_AUDIO_PERMISSION_CODE)
+            showToast(getString(R.string.record_audio_permission_required))
+            return
+        }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun startRecording() {
-        Log.d("MainActivity", "startRecording: Recording process initiated.")
-// Add a class property to keep track of recording count
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-
-// In your startRecording function:
-        val filename = "AUDIO_${timeStamp}_${++recordingCounter}.m4a"
-
-        // Get the app-specific external directory to save the audio file
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC)
-        val audioFile = File(storageDir, filename)
-
-        outputFilePath = audioFile.absolutePath
-        //sharedRepository.outputFilePath =  audioFile.absolutePath
-
-
+        pendingAudioFile?.delete()
+        pendingAudioFile = wordViewModel.createPendingAudioFile()
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setOutputFile(audioFile)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-
-            try {
-                prepare()
-                start()
-                Log.d("MainActivity", "startRecording: Audio file saved at $outputFilePath")
-
-
-
-
-            } catch (e: IOException) {
-                Log.e("MainActivity", "startRecording: exception", e)
-            }
+            setOutputFile(pendingAudioFile?.absolutePath)
         }
-    }
-    fun onRecordingCompleted() {
-        // This function is called from the RecordingDialogFragment when recording is completed
 
-        // After recording is done, show the word input popup
-        val addWordDialog = AddWordDialogFragment()
-        //addWordDialog.setTargetFragment(this, 0) // Set the target fragment
-        addWordDialog.show(supportFragmentManager, "AddWordDialog")
-    }
-    private fun displayWordFragment() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.word_fragment, fragment, "WordFragment")
-            .commit()
-    }
-
-    fun stopRecording(enteredWord: String) {
         try {
-            recorder?.apply {
-                stop()
-                reset()
-                release()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("MainActivity", "stopRecording: exception", e)
-        } finally {
+            recorder?.prepare()
+            recorder?.start()
+            isRecording = true
+        } catch (exception: Exception) {
+            isRecording = false
+            recorder?.release()
             recorder = null
+            pendingAudioFile?.delete()
+            pendingAudioFile = null
+            showToast(getString(R.string.recording_failed))
         }
-
-        // Add word after recording is finished
-        if (imageUri != null && outputFilePath != null) {
-
-
-            // Your wordViewModel.addWord() implementation goes here
-            //wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath?.toUri())
-            outputFilePath?.toUri()
-            //sharedRepository.outputFilePath?
-            wordViewModel.addWord(enteredWord, imageUri!!, outputFilePath!!,outputFilePath?.toUri()!!)
-            val wordAdapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                wordViewModel.wordList.value.map {
-                    it.word }
-            )
-
-           //Add word
-            sharedRepository.wordViewModel.addWord(enteredWord, imageUri!!,outputFilePath!!, outputFilePath?.toUri()!!)
-            sharedRepository.outputFilePath = outputFilePath
-
-            sharedRepository.outputFileList.add(WordUriSelectedImage(enteredWord, sharedRepository.outputFilePath?.toUri()!!).toString())
-
-        }
-
-
-        // Share the recorded audio file
     }
 
+    override fun onStopRecordingRequested() {
+        stopRecording()
+        AddWordDialogFragment().show(supportFragmentManager, "AddWordDialog")
+    }
+
+    override fun onCancelRecordingRequested() {
+        stopRecording(deleteAudio = true)
+        cleanupPendingMedia()
+    }
+
+    override fun onWordSubmitted(word: String) {
+        val imageFile = pendingImageFile ?: run {
+            showToast(getString(R.string.image_import_failed))
+            return
+        }
+
+        wordViewModel.addCustomWord(
+            word = word,
+            pendingImageFile = imageFile,
+            pendingAudioFile = pendingAudioFile,
+        )
+        pendingImageFile = null
+        pendingAudioFile = null
+        showToast(getString(R.string.word_added_success))
+    }
+
+    override fun onAddWordCancelled() {
+        cleanupPendingMedia()
+    }
 
     override fun onDestroy() {
+        stopRecording(deleteAudio = isFinishing)
+        WordAudioPlayer.release()
         super.onDestroy()
-        // Release the MediaPlayer when the activity is destroyed
-        stopPlayback()
     }
 
-    fun playRecordedAudio(outputFilePath: String?) {
-        println("Drych the  dachshund$outputFilePath")
-        if (outputFilePath != null) {
-            val file = File(outputFilePath)
-            val audioUri = FileProvider.getUriForFile(
-                this@MainActivity,
-                "${packageName}.fileprovider",
-                file
-            )
-
-            Log.d("MainActivity", "playRecordedAudio: audioUri=$audioUri")
-            // Rest of the code for MediaPlayer preparation and playback...
+    private fun launchImagePicker() {
+        if (!hasRecordAudioPermission()) {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_AUDIO_PERMISSION_CODE)
+            showToast(getString(R.string.record_audio_permission_required))
+            return
         }
 
-        {
-            Log.e("MainActivity", "playRecordedAudio: outputFilePath is null")
+        pickImageLauncher.launch(arrayOf("image/*"))
+    }
+
+    private fun stopRecording(deleteAudio: Boolean = false) {
+        if (isRecording) {
+            try {
+                recorder?.stop()
+            } catch (_: RuntimeException) {
+                pendingAudioFile?.delete()
+            }
+        }
+
+        recorder?.reset()
+        recorder?.release()
+        recorder = null
+        isRecording = false
+
+        if (deleteAudio) {
+            pendingAudioFile?.delete()
+            pendingAudioFile = null
         }
     }
 
+    private fun cleanupPendingMedia() {
+        pendingImageFile?.delete()
+        pendingAudioFile?.delete()
+        pendingImageFile = null
+        pendingAudioFile = null
+    }
 
-    private fun stopPlayback() {
-        mediaPlayer?.release()
-        mediaPlayer = null
+    private fun hasRecordAudioPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun takeImagePermissions(uri: Uri) {
+        try {
+            contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        } catch (_: SecurityException) {
+            // Some providers do not grant persistable permissions; the image is immediately copied locally.
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

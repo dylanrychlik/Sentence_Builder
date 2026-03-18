@@ -1,15 +1,11 @@
 package com.example.sentencebuilder
 
-import androidx.fragment.app.DialogFragment
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import androidx.fragment.app.FragmentManager
-
-import androidx.appcompat.app.AlertDialog
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -21,39 +17,38 @@ import kotlinx.coroutines.launch
 
 class SelectedWordFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyStateTextView: TextView
     private lateinit var adapter: SelectableImageAdapter
-    private val WordViewModelSelectedImage by activityViewModels<WordViewModelSelectedImage>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                WordViewModelSelectedImage.wordList.collect {
-                    adapter.submitList(it)
-                }
-            }
-        }
-    }
+    private val selectedWordViewModel by activityViewModels<WordViewModelSelectedImage>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
         return inflater.inflate(R.layout.selected_word_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recylerViewselectedImages)
+        emptyStateTextView = view.findViewById(R.id.selectedEmptyState)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        adapter = SelectableImageAdapter()
+        val selectedWordActions = requireActivity() as SelectedWordActions
+        adapter = SelectableImageAdapter(
+            onPlayWord = selectedWordActions::onPlaySelectedWord,
+            onRemoveWord = selectedWordActions::onRemoveSelectedWord,
+        )
         recyclerView.adapter = adapter
 
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedWordViewModel.wordList.collect { words ->
+                    adapter.submitList(words)
+                    emptyStateTextView.isVisible = words.isEmpty()
+                }
+            }
+        }
     }
-
 }
-
-
-

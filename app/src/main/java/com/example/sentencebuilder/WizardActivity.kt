@@ -1,128 +1,99 @@
 package com.example.sentencebuilder
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.core.view.get
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 
-class WizardActivity() : FragmentActivity() {
-    private  val fragment2 = SelectedWordFragment()
-    private val PICK_IMAGE_REQUEST = 1
-    private val sharedRepository: SharedRepository
-        get() = (application as MyApplication).sharedRepository
+class WizardActivity : AppCompatActivity(), SelectedWordActions {
+    private val wordViewModel: WordViewModel by viewModels()
+    private val selectedWordViewModel: WordViewModelSelectedImage by viewModels()
 
-    private val WordViewModelSelectedImage: WordViewModelSelectedImage by viewModels()
-    private lateinit var selectedWordUri: WordUri
-
-
+    private lateinit var wordSpinner: Spinner
+    private lateinit var sentencePreviewTextView: TextView
+    private lateinit var selectedCountTextView: TextView
+    private var availableWords: List<WordUri> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wizard)
-        displayWordFragment()
 
-        val wordSpinner = findViewById<Spinner>(R.id.word_spinner)
+        wordSpinner = findViewById(R.id.word_spinner)
+        sentencePreviewTextView = findViewById(R.id.sentencePreviewText)
+        selectedCountTextView = findViewById(R.id.selectedWordCountText)
 
-
-        // Setup your spinner and button handling here
-        // ...
-        // Handle OK button click, process the selected word from the Spinner
-        val wordAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            sharedRepository.wordViewModel.wordList.value.map {
-                it.word }
-        )
-
-        wordSpinner.adapter = wordAdapter
-        // Set the OnItemSelectedListener for the Spinner
-        wordSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // Handle the item selection here
-                val selectedWord = wordAdapter.getItem(position)
-                // Do something with the selected word
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle case when nothing is selected (optional)
-            }
+        findViewById<Button>(R.id.okButton).setOnClickListener {
+            val selectedWord = availableWords.getOrNull(wordSpinner.selectedItemPosition) ?: return@setOnClickListener
+            selectedWordViewModel.addSelectedWord(selectedWord.id)
         }
-
-        val okButton = findViewById<Button>(R.id.okButton)
-        okButton.setOnClickListener {
-            // Handle OK button click, process the selected word from the Spinner
-            val selectedPosition = wordSpinner.selectedItemPosition
-            val selectedWord = wordAdapter.getItem(selectedPosition)
-
-
-            // Find the corresponding WordUri object from wordViewModel.wordList
-             selectedWordUri =  sharedRepository.wordViewModel.wordList.value.find { it.word == selectedWord }!!
-
-            if  (selectedPosition < 28) {
-                selectedWordUri.imageResId?.let { it1 ->
-                    WordViewModelSelectedImage.addWord(
-                        selectedWordUri.word,
-                        selectedWordUri.imageResId!!
-                    )
-                }
-            } else {
-            selectedWordUri.imageUri?.let { it1 ->
-                WordViewModelSelectedImage.addWord(selectedWordUri.word,
-                    selectedWordUri.imageResId!!,selectedWordUri.imageUri!!,selectedWordUri.outputfile!!,selectedWordUri.soundUri!!)
-            }
-            }
-
-
-            }
-
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
-        cancelButton.setOnClickListener {
-            // Handle Cancel button click
+        findViewById<Button>(R.id.cancelButton).setOnClickListener {
             finish()
         }
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.selected_word_fragment_container, SelectedWordFragment(), "SelectedWordFragment")
+                .commit()
+        }
+
+        observeInventoryWords()
+        observeSelectedWords()
     }
 
-    private fun displayWordFragment() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.selected_word_fragment, fragment2, "SelectedWordFragment")
-            .commit()
+    override fun onPlaySelectedWord(wordUri: WordUri) {
+        WordAudioPlayer.play(this, wordUri)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onRemoveSelectedWord(wordUri: WordUri) {
+        selectedWordViewModel.removeSelectedWord(wordUri.id)
+    }
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            val imageUri = data?.data
+    override fun onDestroy() {
+        WordAudioPlayer.release()
+        super.onDestroy()
+    }
 
-            if (imageUri != null) {
-                // Process the selected image URI here
-                // You can use the imageUri to update your WordViewModelSelectedImage
-                // using the addWord function
-                WordViewModelSelectedImage.addWord(selectedWordUri.word, selectedWordUri.imageUri!!, selectedWordUri.outputfile!!,selectedWordUri.soundUri!!)
-
-            } else {
-                // Handle the case when the selected image URI is null
-                println("Error: Selected image URI is null.")
+    private fun observeInventoryWords() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                wordViewModel.wordList.collect { words ->
+                    availableWords = words
+                    val spinnerAdapter = ArrayAdapter(
+                        this@WizardActivity,
+                        android.R.layout.simple_spinner_item,
+                        words.map { it.word },
+                    ).apply {
+                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    }
+                    wordSpinner.adapter = spinnerAdapter
+                }
             }
         }
     }
+
+    private fun observeSelectedWords() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedWordViewModel.wordList.collect { selectedWords ->
+                    sentencePreviewTextView.text = if (selectedWords.isEmpty()) {
+                        getString(R.string.sentence_preview_placeholder)
+                    } else {
+                        selectedWords.joinToString(separator = " ") { it.word }
+                    }
+                    selectedCountTextView.text = resources.getQuantityString(
+                        R.plurals.selected_word_count,
+                        selectedWords.size,
+                        selectedWords.size,
+                    )
+                }
+            }
+        }
     }
-
-
-
-
+}

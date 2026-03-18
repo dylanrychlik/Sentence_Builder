@@ -2,31 +2,31 @@ package com.example.sentencebuilder
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
+
+interface RecordingDialogListener {
+    fun onStartRecordingRequested()
+    fun onStopRecordingRequested()
+    fun onCancelRecordingRequested()
+}
 
 class RecordingDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity)
-        builder.setTitle("Recording")
-
-            .setMessage("Recording audio...")
-
-
-            .setNegativeButton("Stop Recording") { dialog, id ->
-                (activity as MainActivity).onRecordingCompleted()         }
-        return builder.create()
+        return AlertDialog.Builder(requireContext())
+            .setTitle(R.string.recording_dialog_title)
+            .setMessage(R.string.recording_dialog_message)
+            .setPositiveButton(R.string.stop_recording_button) { _, _ ->
+                (activity as? RecordingDialogListener)?.onStopRecordingRequested()
+            }
+            .setNegativeButton(R.string.cancel_button) { _, _ ->
+                (activity as? RecordingDialogListener)?.onCancelRecordingRequested()
+            }
+            .create()
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).startRecording()
+        (activity as? RecordingDialogListener)?.onStartRecordingRequested()
     }
-
 }

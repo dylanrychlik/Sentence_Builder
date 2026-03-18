@@ -1,24 +1,45 @@
 <resources>
     <string name="app_name">Sentence Builder</string>
-    <string name="read_out_sentence">Read out sentence</string>
-    <string name="add_an_image">Add an image</string>
-    <string name="submit">Submit</string>
     <string name="build_a_sentence">Build a sentence</string>
-    <string name="word_inventory">Word Inventory</string>
-    <string name="image_button_description">Image Button Description</string>
-    <string name="ok_button">OK</string>
-    <string name="send_to">Send to</string>
-
+    <string name="add_image_button_description">Add a custom image</string>
+    <string name="image_button_description">Word image</string>
+    <string name="play_word_button_description">Play word audio</string>
+    <string name="delete_image_button_description">Delete custom image</string>
+    <string name="remove_word_button_description">Remove word from sentence</string>
     <string name="cancel_button">Cancel</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_a_word">Enter a word</string>
     <string name="word_dictionary">Word Dictionary</string>
-    <string name="app_description">The Sentence Builder App is a dynamic sound board app which allows you to add an image, a sound with image, a word for the image and sound as text, and allows you build a sentence with the text. It is intended to help non verbal autistic children and other non verbal children communicate.</string>
+    <string name="app_description">Create a word library with images and audio, then combine them into simple sentences to support communication.</string>
     <string name="add_word">Add Word</string>
-    <string name="select_a_word_from_the_dropdown">Select a Word from the Dropdown</string>
+    <string name="add_word_helper">Choose an image, record the spoken word, and save it to your library.</string>
+    <string name="word_dictionary_helper">Tap any card to hear it. Custom cards can be deleted safely.</string>
+    <string name="select_a_word_from_the_dropdown">Choose a word and add it to the sentence preview.</string>
+    <string name="custom_word_helper">Custom word with recorded audio</string>
+    <string name="default_word_helper">Built-in word. Tap to hear it.</string>
+    <string name="inventory_empty_state">Your word library is empty.</string>
+    <string name="selected_empty_state">No words have been added to the sentence yet.</string>
+    <string name="recording_dialog_title">Record word audio</string>
+    <string name="recording_dialog_message">Recording starts immediately. Stop when you are done speaking the word.</string>
+    <string name="stop_recording_button">Stop recording</string>
+    <string name="record_audio_permission_required">Microphone access is required to add a custom word.</string>
+    <string name="recording_failed">Unable to start recording. Please try again.</string>
+    <string name="image_import_failed">Unable to import the selected image.</string>
+    <string name="add_word_dialog_title">Name this word</string>
+    <string name="add_word_confirm_button">Save word</string>
+    <string name="word_required_error">Enter a word before saving.</string>
+    <string name="word_added_success">Custom word added.</string>
+    <string name="delete_image_title">Delete custom image?</string>
+    <string name="delete_image_message">Delete \"%1$s\" and remove its saved image/audio from the app?</string>
+    <string name="delete_button">Delete</string>
+    <string name="delete_image_success">Custom image deleted.</string>
+    <string name="delete_image_success_with_selection">Custom image deleted and removed from %1$d sentence item(s).</string>
+    <string name="sentence_preview_label">Sentence preview</string>
+    <string name="sentence_preview_placeholder">Your sentence will appear here as you add words.</string>
+    <string name="add_to_sentence_button">Add to sentence</string>
+    <string name="done_button">Done</string>
 
-
+    <plurals name="selected_word_count">
+        <item quantity="one">%d word selected</item>
+        <item quantity="other">%d words selected</item>
+    </plurals>
 </resources>
-
