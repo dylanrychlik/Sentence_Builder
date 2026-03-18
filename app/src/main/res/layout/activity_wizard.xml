@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        app:cardBackgroundColor="@color/warm_surface"
+        app:cardBackgroundColor="@color/playful_peach"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
         app:strokeColor="@color/builder_card_stroke"
@@ -113,9 +113,9 @@
                     android:paddingEnd="10dp"
                     android:text="@string/clear_sentence_button"
                     android:textAllCaps="false"
-                    android:textColor="@color/ink"
+                    android:textColor="@color/playful_primary_dark"
                     app:cornerRadius="16dp"
-                    app:strokeColor="@color/builder_card_stroke" />
+                    app:strokeColor="@color/playful_primary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/speakSentenceButton"
@@ -130,7 +130,7 @@
                     android:text="@string/speak_sentence_button"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    app:backgroundTint="@color/builder_action"
+                    app:backgroundTint="@color/playful_secondary"
                     app:cornerRadius="16dp"
                     app:icon="@android:drawable/ic_btn_speak_now"
                     app:iconPadding="8dp"
@@ -144,10 +144,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/playful_mint"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
-        app:strokeColor="@color/builder_card_stroke"
+        app:strokeColor="@color/playful_accent"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -225,8 +225,8 @@
         android:layout_marginTop="10dp"
         android:text="@string/done_button"
         android:textAllCaps="false"
-        android:textColor="@color/ink"
+        android:textColor="@color/playful_secondary_dark"
         app:cornerRadius="18dp"
-        app:strokeColor="@color/builder_card_stroke" />
+        app:strokeColor="@color/playful_secondary" />
 
 </LinearLayout>

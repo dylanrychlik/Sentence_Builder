@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="@color/ink"
         android:textStyle="bold" />
 
     <TextView
@@ -21,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/app_description"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/ink_muted" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add_word"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/ink"
                 android:textStyle="bold" />
 
             <TextView
@@ -48,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/add_word_helper"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/ink_muted" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,15 +61,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/add_image_button_description"
+            app:backgroundTint="@color/playful_primary"
+            app:tint="@color/white"
             android:src="@drawable/ic_my_icon" />
     </LinearLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/build_sentence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/build_a_sentence" />
+        android:text="@string/build_a_sentence"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/playful_secondary"
+        app:cornerRadius="18dp"
+        app:icon="@android:drawable/ic_media_play"
+        app:iconPadding="10dp"
+        app:iconTint="@color/white" />
 
     <TextView
         android:id="@+id/text_view2"
@@ -73,6 +87,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/word_dictionary"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColor="@color/ink"
         android:textStyle="bold" />
 
     <TextView
@@ -80,7 +95,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/word_dictionary_helper"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/ink_muted" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/word_fragment_container"
