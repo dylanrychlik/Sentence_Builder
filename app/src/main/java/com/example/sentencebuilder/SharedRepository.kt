@@ -97,6 +97,14 @@ class SharedRepository(private val context: Context) {
         return removed
     }
 
+    fun clearSelectedWords(): Int {
+        val removedCount = store.clearSelectedWords()
+        if (removedCount > 0) {
+            publishState()
+        }
+        return removedCount
+    }
+
     fun deleteWord(wordId: String): DeleteWordResult {
         val deleteResult = store.deleteWord(wordId)
         deleteResult.deletedWord?.imageFile()?.delete()

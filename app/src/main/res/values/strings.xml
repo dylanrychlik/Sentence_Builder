@@ -36,8 +36,13 @@
     <string name="delete_image_success">Custom image deleted.</string>
     <string name="sentence_preview_label">Sentence preview</string>
     <string name="sentence_preview_placeholder">Your sentence will appear here as you add words.</string>
+    <string name="clear_sentence_button">Clear sentence</string>
     <string name="speak_sentence_button">Speak sentence</string>
     <string name="sentence_readout_empty_message">Add words before reading the sentence out loud.</string>
+    <string name="clear_sentence_empty_message">There is no sentence to clear yet.</string>
+    <string name="clear_sentence_title">Clear current sentence?</string>
+    <string name="clear_sentence_message">This removes all selected word tiles so you can start a fresh sentence.</string>
+    <string name="clear_sentence_confirm_button">Clear</string>
     <string name="composer_section_title">Composer</string>
     <string name="composer_section_helper">Browse your image library here and build the sentence directly from the word cards.</string>
     <string name="wizard_scroll_instruction">Tap an image card to add it to the sentence. Use the play button to preview a single word first.</string>
@@ -55,5 +60,10 @@
     <plurals name="deleted_image_removed_from_selection">
         <item quantity="one">Custom image deleted and removed from %d sentence item.</item>
         <item quantity="other">Custom image deleted and removed from %d sentence items.</item>
+    </plurals>
+
+    <plurals name="clear_sentence_success">
+        <item quantity="one">Cleared %d word from the sentence.</item>
+        <item quantity="other">Cleared %d words from the sentence.</item>
     </plurals>
 </resources>
