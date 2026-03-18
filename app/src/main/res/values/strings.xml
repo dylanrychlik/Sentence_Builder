@@ -32,7 +32,6 @@
     <string name="delete_image_message">Delete \"%1$s\" and remove its saved image/audio from the app?</string>
     <string name="delete_button">Delete</string>
     <string name="delete_image_success">Custom image deleted.</string>
-    <string name="delete_image_success_with_selection">Custom image deleted and removed from %1$d sentence item(s).</string>
     <string name="sentence_preview_label">Sentence preview</string>
     <string name="sentence_preview_placeholder">Your sentence will appear here as you add words.</string>
     <string name="add_to_sentence_button">Add to sentence</string>
@@ -41,5 +40,10 @@
     <plurals name="selected_word_count">
         <item quantity="one">%d word selected</item>
         <item quantity="other">%d words selected</item>
+    </plurals>
+
+    <plurals name="deleted_image_removed_from_selection">
+        <item quantity="one">Custom image deleted and removed from %d sentence item.</item>
+        <item quantity="other">Custom image deleted and removed from %d sentence items.</item>
     </plurals>
 </resources>

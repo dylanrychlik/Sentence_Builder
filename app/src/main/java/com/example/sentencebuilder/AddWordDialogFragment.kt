@@ -17,8 +17,7 @@ class AddWordDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
-        val customView = LayoutInflater.from(requireContext())
-            .inflate(R.layout.fragment_add_word_dialog, null)
+        val customView = layoutInflater.inflate(R.layout.fragment_add_word_dialog, null)
         wordEditText = customView.findViewById(R.id.wordEditText)
 
         val dialog = builder

@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -87,7 +88,11 @@ class MainActivity : AppCompatActivity(), WordInventoryActions, RecordingDialogL
                 val deleteResult = wordViewModel.deleteWord(wordUri.id)
                 if (deleteResult.deletedWord != null) {
                     val message = if (deleteResult.removedSelectedCount > 0) {
-                        getString(R.string.delete_image_success_with_selection, deleteResult.removedSelectedCount)
+                        resources.getQuantityString(
+                            R.plurals.deleted_image_removed_from_selection,
+                            deleteResult.removedSelectedCount,
+                            deleteResult.removedSelectedCount,
+                        )
                     } else {
                         getString(R.string.delete_image_success)
                     }
@@ -100,7 +105,11 @@ class MainActivity : AppCompatActivity(), WordInventoryActions, RecordingDialogL
 
     override fun onStartRecordingRequested() {
         if (!hasRecordAudioPermission()) {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_AUDIO_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                RECORD_AUDIO_PERMISSION_CODE,
+            )
             showToast(getString(R.string.record_audio_permission_required))
             return
         }
@@ -166,7 +175,11 @@ class MainActivity : AppCompatActivity(), WordInventoryActions, RecordingDialogL
 
     private fun launchImagePicker() {
         if (!hasRecordAudioPermission()) {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_AUDIO_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                RECORD_AUDIO_PERMISSION_CODE,
+            )
             showToast(getString(R.string.record_audio_permission_required))
             return
         }
