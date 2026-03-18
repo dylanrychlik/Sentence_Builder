@@ -37,7 +37,7 @@
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:text="@string/select_a_word_from_the_dropdown"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/ink_muted" />
@@ -46,7 +46,7 @@
         android:id="@+id/sentencePreviewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         app:cardBackgroundColor="@color/warm_surface"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
@@ -57,7 +57,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:paddingStart="16dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
 
             <TextView
                 android:id="@+id/sentencePreviewLabel"
@@ -72,18 +75,20 @@
                 android:id="@+id/sentencePreviewText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="4dp"
-                android:minHeight="60dp"
+                android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="2"
+                android:minHeight="34dp"
                 android:text="@string/sentence_preview_placeholder"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:textColor="@color/ink"
                 tools:text="Beach dog funny" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -100,7 +105,12 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="40dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/clear_sentence_button"
                     android:textAllCaps="false"
                     android:textColor="@color/ink"
@@ -112,6 +122,11 @@
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="40dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/speak_sentence_button"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -128,7 +143,7 @@
         android:id="@+id/composerCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
@@ -139,7 +154,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -160,7 +178,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/wizard_scroll_instruction"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@color/ink_muted" />
@@ -168,8 +186,8 @@
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/wizard_word_picker_container"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_marginTop="12dp" />
+                android:layout_height="320dp"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -177,7 +195,7 @@
         android:id="@+id/selectedWordsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:text="@string/selected_words_section_title"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/ink"
@@ -187,7 +205,7 @@
         android:id="@+id/selectedWordsHelper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:text="@string/selected_words_section_helper"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@color/ink_muted" />
@@ -196,7 +214,7 @@
         android:id="@+id/selected_word_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1" />
 
     <com.google.android.material.button.MaterialButton
@@ -204,7 +222,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:text="@string/done_button"
         android:textAllCaps="false"
         android:textColor="@color/ink"
