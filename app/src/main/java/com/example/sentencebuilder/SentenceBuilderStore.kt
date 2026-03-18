@@ -43,6 +43,12 @@ class SentenceBuilderStore(
         return selectedWords.removeAll { it.id == selectedWordId }
     }
 
+    fun clearSelectedWords(): Int {
+        val removedCount = selectedWords.size
+        selectedWords.clear()
+        return removedCount
+    }
+
     fun deleteWord(wordId: String): DeleteWordResult {
         val deletedWord = customWords.firstOrNull { it.id == wordId } ?: return DeleteWordResult(null, 0)
         customWords.removeAll { it.id == wordId }

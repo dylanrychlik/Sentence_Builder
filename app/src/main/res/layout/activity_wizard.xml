@@ -96,6 +96,18 @@
                     android:textColor="@color/ink_muted" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearSentenceButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/clear_sentence_button"
+                    android:textAllCaps="false"
+                    android:textColor="@color/ink"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/builder_card_stroke" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/speakSentenceButton"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"

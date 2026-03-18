@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,7 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions, WizardWordPicke
     private lateinit var sentencePreviewTextView: TextView
     private lateinit var selectedCountTextView: TextView
     private lateinit var speakSentenceButton: Button
+    private lateinit var clearSentenceButton: Button
     private var latestSentenceText: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +28,7 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions, WizardWordPicke
         sentencePreviewTextView = findViewById(R.id.sentencePreviewText)
         selectedCountTextView = findViewById(R.id.selectedWordCountText)
         speakSentenceButton = findViewById(R.id.speakSentenceButton)
+        clearSentenceButton = findViewById(R.id.clearSentenceButton)
 
         speakSentenceButton.setOnClickListener {
             if (latestSentenceText.isBlank()) {
@@ -34,6 +37,32 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions, WizardWordPicke
             }
 
             WordAudioPlayer.speakText(this, latestSentenceText, "built-sentence")
+        }
+        clearSentenceButton.setOnClickListener {
+            if (latestSentenceText.isBlank()) {
+                Toast.makeText(this, R.string.clear_sentence_empty_message, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle(R.string.clear_sentence_title)
+                .setMessage(R.string.clear_sentence_message)
+                .setPositiveButton(R.string.clear_sentence_confirm_button) { _, _ ->
+                    val clearedCount = selectedWordViewModel.clearSentence()
+                    if (clearedCount > 0) {
+                        Toast.makeText(
+                            this,
+                            resources.getQuantityString(
+                                R.plurals.clear_sentence_success,
+                                clearedCount,
+                                clearedCount,
+                            ),
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+                .setNegativeButton(R.string.cancel_button, null)
+                .show()
         }
         findViewById<Button>(R.id.cancelButton).setOnClickListener {
             finish()
@@ -89,6 +118,8 @@ class WizardActivity : AppCompatActivity(), SelectedWordActions, WizardWordPicke
                     )
                     speakSentenceButton.isEnabled = selectedWords.isNotEmpty()
                     speakSentenceButton.alpha = if (selectedWords.isEmpty()) 0.55f else 1f
+                    clearSentenceButton.isEnabled = selectedWords.isNotEmpty()
+                    clearSentenceButton.alpha = if (selectedWords.isEmpty()) 0.55f else 1f
                 }
             }
         }

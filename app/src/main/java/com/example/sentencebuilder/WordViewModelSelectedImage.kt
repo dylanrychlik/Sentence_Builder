@@ -13,4 +13,6 @@ class WordViewModelSelectedImage(application: Application) : AndroidViewModel(ap
     fun addSelectedWord(sourceWordId: String): WordUri? = repository.addSelectedWord(sourceWordId)
 
     fun removeSelectedWord(selectedWordId: String): Boolean = repository.removeSelectedWord(selectedWordId)
+
+    fun clearSentence(): Int = repository.clearSelectedWords()
 }

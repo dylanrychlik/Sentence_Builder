@@ -61,4 +61,19 @@ class SentenceBuilderStoreTest {
         assertEquals(0, result.removedSelectedCount)
         assertTrue(store.getInventoryWords().any { it.id == builtInWord.id })
     }
+
+    @Test
+    fun clearSelectedWords_removesSentenceOnly() {
+        val builtInWord = DefaultWordCatalog.words.first()
+        val store = SentenceBuilderStore()
+
+        store.addSelectedWord(builtInWord.id)
+        store.addSelectedWord(builtInWord.id)
+
+        val removedCount = store.clearSelectedWords()
+
+        assertEquals(2, removedCount)
+        assertTrue(store.getSelectedWords().isEmpty())
+        assertTrue(store.getInventoryWords().any { it.id == builtInWord.id })
+    }
 }
